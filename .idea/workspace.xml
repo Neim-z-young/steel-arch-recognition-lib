@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="pclDemo" targetName="show_pcd_file" />
+      <config projectName="pclDemo" targetName="spin_images" />
+      <config projectName="pclDemo" targetName="voxelization" />
+      <config projectName="pclDemo" targetName="cluster" />
+      <config projectName="pclDemo" targetName="ground_remove" />
+      <config projectName="pclDemo" targetName="rockface_extraction" />
+      <config projectName="pclDemo" targetName="steel_arch_extraction" />
+      <config projectName="pclDemo" targetName="calibration" />
+      <config projectName="pclDemo" targetName="pclDemo" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FavoritesManager">
+    <favorites_list name="pclDemo" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+      </list>
+    </option>
+  </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
+  <component name="ProjectId" id="1VxyALN2lPnWqVhtbw9L7qAI5ze" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.advertisement.text.has.clang-format" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../muduo" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="CMake Application.steel_arch_extraction">
+    <configuration name="calibration" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_xyz_clustered.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="calibration" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="calibration">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="cluster" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/xyz_voxelization.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="cluster" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="cluster">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ground_remove" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_xyz_clustered.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="ground_remove" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="ground_remove">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="pclDemo" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="pclDemo" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="pclDemo">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="rockface_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_xyz_clustered_groundRemoved.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="rockface_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="rockface_extraction">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="show_pcd_file" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/xyz_voxelization.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="show_pcd_file" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="show_pcd_file">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="spin_images" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="spin_images" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="spin_images">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="steel_arch_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_xyz_clustered_rockface.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="steel_arch_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="steel_arch_extraction">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxelization" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/xyz.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="voxelization" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="voxelization">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.pclDemo" />
+      <item itemvalue="CMake Application.calibration" />
+      <item itemvalue="CMake Application.cluster" />
+      <item itemvalue="CMake Application.ground_remove" />
+      <item itemvalue="CMake Application.rockface_extraction" />
+      <item itemvalue="CMake Application.show_pcd_file" />
+      <item itemvalue="CMake Application.spin_images" />
+      <item itemvalue="CMake Application.steel_arch_extraction" />
+      <item itemvalue="CMake Application.voxelization" />
+    </list>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="showServicesTree" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="" />
+      <created>1578208895103</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578208895103</updated>
+      <workItem from="1578208896789" duration="951000" />
+      <workItem from="1578285761574" duration="2401000" />
+      <workItem from="1578288198036" duration="93000" />
+      <workItem from="1578288400358" duration="1094000" />
+      <workItem from="1578289519213" duration="17000" />
+      <workItem from="1579486610581" duration="1220000" />
+      <workItem from="1579494143041" duration="40000" />
+      <workItem from="1584164129212" duration="2793000" />
+      <workItem from="1584167529469" duration="539000" />
+      <workItem from="1584168251889" duration="179000" />
+      <workItem from="1584168481605" duration="96000" />
+      <workItem from="1584168624353" duration="74000" />
+      <workItem from="1584168740613" duration="40000" />
+      <workItem from="1584168851183" duration="1514000" />
+      <workItem from="1584170389215" duration="383000" />
+      <workItem from="1584171106198" duration="54000" />
+      <workItem from="1584171184426" duration="71000" />
+      <workItem from="1584171275743" duration="427000" />
+      <workItem from="1584240046963" duration="658000" />
+      <workItem from="1584427797982" duration="1003000" />
+      <workItem from="1584433748152" duration="4804000" />
+      <workItem from="1584513891222" duration="1786000" />
+      <workItem from="1584687047576" duration="372000" />
+      <workItem from="1584758035945" duration="10000" />
+      <workItem from="1584860705880" duration="1376000" />
+      <workItem from="1584929869421" duration="24533000" />
+      <workItem from="1584977570911" duration="148000" />
+      <workItem from="1585014748045" duration="4992000" />
+      <workItem from="1585100851608" duration="7893000" />
+      <workItem from="1585187355252" duration="2018000" />
+      <workItem from="1585274978487" duration="12181000" />
+      <workItem from="1585361260081" duration="12827000" />
+      <workItem from="1585537073426" duration="13342000" />
+      <workItem from="1585623761375" duration="9018000" />
+      <workItem from="1585707238225" duration="3683000" />
+      <workItem from="1585725807101" duration="154000" />
+      <workItem from="1585967429712" duration="14756000" />
+      <workItem from="1586066654121" duration="17978000" />
+      <workItem from="1586095618415" duration="1939000" />
+      <workItem from="1586139667638" duration="12131000" />
+      <workItem from="1586160457388" duration="20000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
+          <line>182</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
+          <line>200</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp</url>
+          <line>127</line>
+          <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
+          <line>221</line>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
+          <line>233</line>
+          <option name="timeStamp" value="49" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
+          <line>226</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
