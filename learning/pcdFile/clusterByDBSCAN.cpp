@@ -20,6 +20,8 @@
 
 //user lib
 #include "pclDBSCAN.h"
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
 
 int main(int, char **argv) {
     std::string filename = argv[1];
@@ -39,17 +41,15 @@ int main(int, char **argv) {
     std::cout << "After voxellization size is: " << (*cloud).points.size() << std::endl;
 
     //聚类参数
-    float multiple = 2500, radius = 0.3;
-    int min_pts = 200;
 
     std::cout << "start cluster..." << std::endl;
     designSpace::DBSCAN<pcl::PointXYZ> dbscan;
     std::vector<pcl::PointIndices> cluster_indices;
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     dbscan.setInputCloud(cloud);
-    dbscan.setRadius(radius * multiple);
+    dbscan.setRadius(_PARAM_.RADIUS_DBSCAN_);
     dbscan.setTree(tree);
-    dbscan.setMinPtsPerCoreObject(min_pts);
+    dbscan.setMinPtsPerCoreObject(_PARAM_.MIN_PTS_);
     dbscan.extract(cluster_indices);
 
     std::cout << "cluster size: " << cluster_indices.size() << std::endl;
@@ -106,8 +106,18 @@ int main(int, char **argv) {
 //    {}
 
     std::cout<<"max cluster size: "<<clustered_color_cloud->points.size()<<std::endl;
-    std::string out_file = "/home/oyoungy/Documents/DATA/rgb_xyz_clustered.pcd";
+
+    std::string path, name;
+    designSpace::TunnelParameter::getPcdFileNameAndPath(filename, name, path);
+    std::string out_file = path+"rgb_clustered_"+name;
     pcl::io::savePCDFileASCII(out_file, *clustered_color_cloud);
     std::cout<<"write rgb points to "<<out_file<<std::endl;
+
+    //show
+    pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
+    visualizer.addPointCloud(clustered_color_cloud);
+    while (!visualizer.wasStopped()) {
+        visualizer.spinOnce(100);
+    }
     return 0;
 }

@@ -126,6 +126,7 @@ protected:
     void regionQuery(PointT point, std::vector<int>& radius_indices) {
 
         std::vector<float> radius_sqrt_dist;
+        radius_indices.clear();
         tree_->radiusSearch(point, radius_,  radius_indices, radius_sqrt_dist);
     }
 
@@ -138,10 +139,11 @@ protected:
 //                continue;
 //            }
 //            clustered[index] = true;
-            if(!processed[index]){  //未进行领域探寻，则需判断该点是否为核心点
-                processed[index] = true;
+            int p_inx = indices.indices[index];
+            if(!processed[p_inx]){  //未进行领域探寻，则需判断该点是否为核心点
+                processed[p_inx] = true;
                 std::vector<int> tmp_radius_indices;
-                regionQuery((*input_).points[index], tmp_radius_indices);
+                regionQuery((*input_).points[p_inx], tmp_radius_indices);
                 if(static_cast<int>(tmp_radius_indices.size())>=min_pts_per_core_object){ //是核心点，则扩充该类别
                     for(const int &i:tmp_radius_indices){
                         if(!clustered[i]){

@@ -22,6 +22,8 @@
 
 //user lib
 #include "steelArchHelper.h"
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
 
 int main(int, char **argv) {
     std::string filename = argv[1];
@@ -89,19 +91,17 @@ int main(int, char **argv) {
 
 
     std::cout << "setting parameter..."<<std::endl;
-    //TODO 参数设置
-    float Wa = 1*1000, radius_d = 0.5f * Wa, segment_length = 0.1f * Wa, arch_thick = 1000*0.2;
-    int k = 40;
+    //参数设置
     designSpace::SteelArchExtraction<pcl::PointXYZRGB> steelArchExtraction;
 
     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
     steelArchExtraction.setInputCloud(rockface_cloud);
     steelArchExtraction.setIndices(rockface_indices);
-    steelArchExtraction.setK(k);
-    steelArchExtraction.setRadius(radius_d);
+    steelArchExtraction.setK(_PARAM_.K_FOR_C_N_);
+    steelArchExtraction.setRadius(_PARAM_.RADIUS_FOR_C_N_);
     steelArchExtraction.setTree(tree);
-    steelArchExtraction.setArchThickness(arch_thick);
-    steelArchExtraction.setSteelArchGap(Wa);
+    steelArchExtraction.setArchThickness(_PARAM_.ARCH_STEEL_THICKNESS_);
+    steelArchExtraction.setSteelArchGap(_PARAM_.ARCH_STEEL_GAP_);
     steelArchExtraction.setStartArchGap(0.);
     steelArchExtraction.setViewPoint(x, y, z);
 
@@ -139,12 +139,12 @@ int main(int, char **argv) {
     pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
     visualizer.addCoordinateSystem(10000, x, y, z);
 
-//    visualizer.addPointCloud(rockface_cloud);
+    visualizer.addPointCloud(rockface_cloud);
     //visualizer.initCameraParameters ();
 
     visualizer.addPointCloud(steel_arch_cloud, "steel");
 
-    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 3, "steel");
+    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "steel");
 
 //    visualizer.addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(rockface_cloud, normals, 40, 500, "normal");
 

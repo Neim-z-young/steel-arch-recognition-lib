@@ -25,6 +25,10 @@
 //eigen
 #include <Eigen/Dense>
 
+//user lib
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
+
 namespace designSpace {
     //Wd = [ voxel_size, Wa] x轴切片大小
 //Pi 点云沿x轴的段序列
@@ -219,9 +223,10 @@ namespace designSpace {
                     //寻找可能的钢拱点
                     std::vector<int> k_indices;
                     std::vector<float> k_sqr_distances;
-                    float voxelSize = 2500. * 0.026; //TODO fix it
+                    float voxelSize = _PARAM_.VOXEL_SIZE_; //使用常数
                     size_t max_salient_points = ceil(2 * arch_thickness_ / voxelSize);
-                    tree_->radiusSearch(seed_points_[index], arch_thickness_, k_indices, k_sqr_distances, 5*max_salient_points);
+                    //搜索半径有区别
+                    tree_->radiusSearch(seed_points_[index], 2*arch_thickness_, k_indices, k_sqr_distances, 5*max_salient_points);
 
                     size_t size = k_indices.size();
                     if(size>0){
@@ -342,7 +347,7 @@ namespace designSpace {
             Eigen::Vector3f vx(1, 0, 0);
             Eigen::Vector3f tmp_d = vx.cross(n);
             //TODO 修改生长步长，不应太大
-            tmp_d = 1 * arch_thickness_ * (tmp_d / tmp_d.norm());
+            tmp_d = 2 * arch_thickness_ * (tmp_d / tmp_d.norm());
 
             direction.x = tmp_d(0);
             direction.y = tmp_d(1);

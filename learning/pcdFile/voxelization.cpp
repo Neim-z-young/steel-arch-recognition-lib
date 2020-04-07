@@ -11,6 +11,10 @@
 #include<pcl/visualization/cloud_viewer.h>
 #include<pcl/filters/voxel_grid.h>
 
+//userlib
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
+
 int main(int, char** argv)
 {
     std::string filename = argv[1];
@@ -29,17 +33,25 @@ int main(int, char** argv)
     pcl::PointCloud<pcl::PointXYZ>::Ptr voxelFilterCloud (new pcl::PointCloud<pcl::PointXYZ>);
     pcl::VoxelGrid<pcl::PointXYZ> voxelGrid;
     voxelGrid.setInputCloud(cloud);
-    float sensorResolution = 0.05, scanSize = 30, multiple = 2500;
-    float voxelSize =multiple*scanSize*tan(M_PI/180*0.05);
-    voxelGrid.setLeafSize(voxelSize, voxelSize, voxelSize);
+
+    voxelGrid.setLeafSize(_PARAM_.VOXEL_SIZE_, _PARAM_.VOXEL_SIZE_, _PARAM_.VOXEL_SIZE_);
     voxelGrid.filter(*voxelFilterCloud);
 
     std::cout<<"before voxelization size is: "<<(*cloud).points.size()<<std::endl;
-    std::cout<<"Voxel size is: "<<voxelSize<<std::endl;
+    std::cout << "Voxel size is: " << _PARAM_.VOXEL_SIZE_ << std::endl;
     std::cout<<"After voxellization size is: "<<(*voxelFilterCloud).points.size()<<std::endl;
 
-    std::string out_file = "/home/oyoungy/Documents/DATA/xyz_voxelization.pcd";
+    std::string path, name;
+    designSpace::TunnelParameter::getPcdFileNameAndPath(filename, name, path);
+    std::string out_file = path+"voxelization_"+name;
     pcl::io::savePCDFileASCII(out_file, *voxelFilterCloud);
 
     std::cout<<"write points to "<<out_file<<std::endl;
+
+    //show
+    pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
+    visualizer.addPointCloud(voxelFilterCloud);
+    while (!visualizer.wasStopped()) {
+        visualizer.spinOnce(100);
+    }
 }

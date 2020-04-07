@@ -22,6 +22,9 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/visualization/pcl_plotter.h>
 
+//user lib
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
 namespace designSpace {
     //Wd = [ voxel_size, Wa] x轴切片大小
 //Pi 点云沿x轴的段序列
@@ -94,7 +97,7 @@ namespace designSpace {
         }
 
         void setK(int k) {
-            RockfaceExtraction::k_ = k;
+            k_ = k;
         }
 
         const Segments &getSegmentIndices() const {
@@ -139,7 +142,7 @@ namespace designSpace {
             //防止错误调用
             assert(curvatures_.size()!=0);
 
-            int step = 3 * 1000 * 1 / segment_length_; //TODO fix it  3*Wa/Wd
+            int step = _PARAM_.CONCRETE_FACE_STEP_; //3*Wa/Wd
             int max_m1 = 0;
             float max_g_vaue = FLT_MIN;
             size_t size = curvatures_.size();
@@ -183,7 +186,7 @@ namespace designSpace {
         int removeWorkface(int start_segment, std::vector<int>& rockface_indices){
             assert(heights_.size()!=0);
 
-            int step = 1 * 1000 * 1 / segment_length_; //TODO 步数发生变化，需修改
+            int step = _PARAM_.WORK_FACE_STEP_; //差分步数
             int min_m1 = start_segment;
             float min_g_vaue = FLT_MAX;
             size_t size = heights_.size();
@@ -201,7 +204,7 @@ namespace designSpace {
                 avg_height += heights_[i];
             }
             avg_height /= float(min_m1 - start_segment + 1);
-            threshold = 0.2*1000*1.5f; //TODO 阈值使用钢拱宽度B的相关参数
+            threshold = _PARAM_.ARCH_STEEL_THICKNESS_*2.f; //TODO 阈值设定
 
             //采用高度阈值法筛选
             for (size_t i = start_segment; i < size; i++) {
@@ -228,7 +231,7 @@ namespace designSpace {
             for (size_t i = 0; i < seg_size; i++) {
                 X_value.push_back(i);
                 curvature_Y_value.push_back(curvatures_[i]);
-                int step = 30; //TODO 修改魔数
+                int step = _PARAM_.CONCRETE_FACE_STEP_; //修改步数
                 if (i + step < seg_size) {
                     g_Y_value.push_back(g_function(curvatures_, i, step));
                 } else {
@@ -255,7 +258,7 @@ namespace designSpace {
             for (size_t i = start_seg; i < seg_size; i++) {
                 X_value.push_back(i);
                 height_Y_value.push_back(heights_[i]);
-                int step = 10; //TODO 修改魔数
+                int step = _PARAM_.WORK_FACE_STEP_; //修改步数
                 if (i + step < seg_size) {
                     g_Y_value.push_back(g_function(heights_, i, step));
                 } else {

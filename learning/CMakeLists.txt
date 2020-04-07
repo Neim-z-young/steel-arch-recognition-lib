@@ -12,42 +12,42 @@ target_link_libraries(show_pcd_file
         ${PCL_LIBRARIES}
         )
 
-add_executable(voxelization pcdFile/voxelization.cpp)
+add_executable(voxelization pcdFile/voxelization.cpp designLib/tunnelTool.h)
 target_link_libraries(voxelization
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
         ${PCL_LIBRARIES}
         )
 
-add_executable(cluster pcdFile/clusterByDBSCAN.cpp pcdFile/pclDBSCAN.cpp)
+add_executable(cluster pcdFile/clusterByDBSCAN.cpp pcdFile/pclDBSCAN.cpp designLib/tunnelTool.h)
 target_link_libraries(cluster
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
         ${PCL_LIBRARIES}
         )
 
-add_executable(calibration pcdFile/calibration.cpp pcdFile/calibratingTool.h)
+add_executable(calibration pcdFile/calibration.cpp pcdFile/calibratingTool.h designLib/tunnelTool.h)
 target_link_libraries(calibration
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
         ${PCL_LIBRARIES}
         )
 
-add_executable(rockface_extraction pcdFile/rockfaceExtraction.cpp pcdFile/rockfaceHelper.h)
+add_executable(rockface_extraction pcdFile/rockfaceExtraction.cpp pcdFile/rockfaceHelper.h designLib/tunnelTool.h)
 target_link_libraries(rockface_extraction
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
         ${PCL_LIBRARIES}
         )
 
-add_executable(ground_remove pcdFile/groundRemove.cpp pcdFile/groundHelper.h)
+add_executable(ground_remove pcdFile/groundRemove.cpp pcdFile/groundHelper.h designLib/tunnelTool.h)
 target_link_libraries(ground_remove
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
         ${PCL_LIBRARIES}
         )
 
-add_executable(steel_arch_extraction pcdFile/steelArchExtraction.cpp pcdFile/steelArchHelper.h)
+add_executable(steel_arch_extraction pcdFile/steelArchExtraction.cpp pcdFile/steelArchHelper.h designLib/tunnelTool.h)
 target_link_libraries(steel_arch_extraction
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}

@@ -26,8 +26,9 @@
 #include <pcl/features/principal_curvatures.h>
 
 //user lib
-#include "rockfaceHelper.h"
+#include "../designLib/tunnelTool.h"
 #include "groundHelper.h"
+using designSpace::_PARAM_;
 
 int main(int, char **argv) {
     std::string filename = argv[1];
@@ -42,8 +43,6 @@ int main(int, char **argv) {
     }
     std::cout << "Loaded " << clustered_color_cloud->points.size() << " points." << std::endl;
 
-    float multiple = 2500, radius = 0.3;
-    int min_pts = 200;
 
     std::cout << "Clustered points size is: " << (*clustered_color_cloud).points.size() << std::endl;
 
@@ -54,10 +53,11 @@ int main(int, char **argv) {
 
     time_t start, end;
 
+
     designSpace::GroundRemoval<pcl::PointXYZRGB> groundRemoval;
     pcl::PointIndices::Ptr remain_indices_ptr(new pcl::PointIndices);
     groundRemoval.setAxis('z');
-    groundRemoval.setGroundHeight(0.5*1000);
+    groundRemoval.setGroundHeight(_PARAM_.GROUND_HEIGHT_);
     groundRemoval.setInputCloud(clustered_color_cloud);
     groundRemoval.setIndices(cluster_indices);
 
@@ -91,7 +91,9 @@ int main(int, char **argv) {
 //    while (!viewer.wasStopped())//要想让自己所创窗口一直显示，则加上 while (!viewer.wasStopped()){ };即可.
 //    {}
 
-    std::string out_file = "/home/oyoungy/Documents/DATA/rgb_xyz_clustered_groundRemoved.pcd";
+    std::string path, name;
+    designSpace::TunnelParameter::getPcdFileNameAndPath(filename, name, path);
+    std::string out_file = path+"groundRemoved_"+name;
     pcl::io::savePCDFileASCII(out_file, *ground_removed_cloud);
     std::cout<<"write rgb points to "<<out_file<<std::endl;
 

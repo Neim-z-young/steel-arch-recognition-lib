@@ -23,6 +23,8 @@
 
 //user lib
 #include "rockfaceHelper.h"
+#include "../designLib/tunnelTool.h"
+using designSpace::_PARAM_;
 
 int main(int, char **argv) {
     std::string filename = argv[1];
@@ -37,8 +39,6 @@ int main(int, char **argv) {
     }
     std::cout << "Loaded " << clustered_color_cloud->points.size() << " points." << std::endl;
 
-    float multiple = 2500, radius = 0.3;
-    int min_pts = 200;
 
     std::cout << "Clustered points size is: " << (*clustered_color_cloud).points.size() << std::endl;
 
@@ -71,17 +71,15 @@ int main(int, char **argv) {
     std::cout << "z axis range is: " <<max_z - min_z<< std::endl;
 
 
-    //TODO 参数设置
-    float Wa = 1*1000, radius_d = 0.3f * Wa, segment_length = 0.1f * Wa;
-    int k = 20;
+    // 参数设置
     designSpace::RockfaceExtraction<pcl::PointXYZRGB> rockfaceExtraction;
     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
     rockfaceExtraction.setInputCloud(clustered_color_cloud);
     rockfaceExtraction.setTree(tree);
     rockfaceExtraction.setAxis('x');
-    rockfaceExtraction.setRadius(radius_d);
-    rockfaceExtraction.setK(k);
-    rockfaceExtraction.setSegmentLength(segment_length);
+    rockfaceExtraction.setRadius(_PARAM_.RADIUS_FOR_C_N_);
+    rockfaceExtraction.setK(_PARAM_.K_FOR_C_N_);
+    rockfaceExtraction.setSegmentLength(_PARAM_.SEGMENT_LENGTH_);
 
 
     pcl::PointIndices::Ptr rockface_indices_ptr(new pcl::PointIndices);
@@ -97,7 +95,9 @@ int main(int, char **argv) {
 
     std::cout<<"extracted size: "<<rockface_indices_ptr->indices.size()<<std::endl;
 
-    std::string out_file = "/home/oyoungy/Documents/DATA/rgb_xyz_clustered_rockface.pcd";
+    std::string path, name;
+    designSpace::TunnelParameter::getPcdFileNameAndPath(filename, name, path);
+    std::string out_file = path+"rockface_"+name;
     pcl::io::savePCDFile(out_file, *clustered_color_cloud, rockface_indices_ptr->indices);
     std::cout<<"write rgb points to "<<out_file<<std::endl;
 
