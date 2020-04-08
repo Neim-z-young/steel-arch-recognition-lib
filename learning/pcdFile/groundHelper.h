@@ -72,7 +72,7 @@ namespace designSpace {
                 (indices_ && indices_->empty())) {
                 return;
             }
-            float min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
+            float min_x = FLT_MAX, max_x = -FLT_MAX, min_y = FLT_MAX, max_y = -FLT_MAX, min_z = FLT_MAX, max_z = -FLT_MAX;
             for (size_t i = 0; i < indices_->size(); i++) {
                 min_x = fmin(min_x, input_->points[(*indices_)[i]].x);
                 min_y = fmin(min_y, input_->points[(*indices_)[i]].y);

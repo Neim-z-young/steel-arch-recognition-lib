@@ -45,7 +45,7 @@ int main(int, char **argv) {
 
     time_t start, end;
 
-    float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
+    float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = -FLT_MAX, min_y = FLT_MAX, max_y = -FLT_MAX, min_z = FLT_MAX, max_z = -FLT_MAX;
     for (size_t i = 0; i < clustered_color_cloud->points.size(); i++) {
         min_x = fmin(min_x, clustered_color_cloud->points[i].x);
         min_y = fmin(min_y, clustered_color_cloud->points[i].y);

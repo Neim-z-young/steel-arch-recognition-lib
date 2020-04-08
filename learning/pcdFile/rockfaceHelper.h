@@ -144,7 +144,7 @@ namespace designSpace {
 
             int step = _PARAM_.CONCRETE_FACE_STEP_; //3*Wa/Wd
             int max_m1 = 0;
-            float max_g_vaue = FLT_MIN;
+            float max_g_vaue = -FLT_MAX;
             size_t size = curvatures_.size();
             for (size_t m1 = 0; m1 < size - step; m1++) {
                 float tmp = g_function(curvatures_, m1, step);
@@ -203,11 +203,11 @@ namespace designSpace {
             for (int i = start_segment; i < min_m1; i++) {
                 avg_height += heights_[i];
             }
-            avg_height /= float(min_m1 - start_segment + 1);
-            threshold = _PARAM_.ARCH_STEEL_THICKNESS_*2.f; //TODO 阈值设定
+            avg_height /= float(min_m1 - start_segment);
+            threshold = _PARAM_.ARCH_STEEL_THICKNESS_*1.5f; //TODO 阈值设定
 
             //采用高度阈值法筛选
-            for (size_t i = start_segment; i < size; i++) {
+            for (size_t i = start_segment; i < min_m1; i++) {
                 if (heights_[i] <=  avg_height + threshold && heights_[i] >= avg_height - threshold) {
                     for (const int& t : (*segment_indices_[i])) {
                         rockface_indices.push_back(t);
@@ -279,7 +279,7 @@ namespace designSpace {
 
         //将点云沿轴分段
         void cloudSegmentAloneAxis(Segments &indices) {
-            float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = FLT_MIN, min_y = FLT_MAX, max_y = FLT_MIN, min_z = FLT_MAX, max_z = FLT_MIN;
+            float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = -FLT_MAX, min_y = FLT_MAX, max_y = -FLT_MAX, min_z = FLT_MAX, max_z = -FLT_MAX;
             for (size_t i = 0; i < input_->points.size(); i++) {
                 min_x = fmin(min_x, input_->points[i].x);
                 min_y = fmin(min_y, input_->points[i].y);
@@ -351,15 +351,28 @@ namespace designSpace {
                     total_height += input_->points[(*segment_indices)[index]].z;
                 }
             } else{
-                float max_height = FLT_MIN;
+                float max_height = -FLT_MAX, min_height = FLT_MAX;
+                int max_inx = -1;
                 for (const int& index:(*segment_indices)) {
-                    total_height += input_->points[index].z;
                     if(max_height < input_->points[index].z){
                         max_height = input_->points[index].z;
+                        max_inx = index;
+                    }
+                    if(min_height > input_->points[index].z){
+                        min_height = input_->points[index].z;
                     }
                 }
-                total_height = max_height;
-                k_samples = 1;
+                //计算最高点附件其他点的平均高度来估算该段的高度
+                std::vector<int> k_indices;
+                std::vector<float> k_sqr_distances;
+                assert(max_inx >= 0);
+                tree_->setInputCloud(input_, segment_indices);
+                tree_->radiusSearch(input_->points[max_inx], radius_, k_indices, k_sqr_distances);
+                for(const int& index:k_indices){
+                    total_height += (input_->points[index].z - min_height);
+                }
+//                total_height = max_height - min_height;
+                k_samples = k_indices.size();
             }
             //TODO search max z value
 
