@@ -48,7 +48,8 @@ namespace designSpace {
 
 
         GroundRemoval() : ground_height_(1),
-                          axis_('z'){}
+                          axis_('z'),
+                          ground_indices_(new std::vector<int>){}
 
         float getGroundHeight() const {
             return ground_height_;
@@ -64,6 +65,10 @@ namespace designSpace {
 
         void setAxis(char axis) {
             axis_ = axis;
+        }
+
+        const IndicesPtr &getGroundIndices() const {
+            return ground_indices_;
         }
 
         void remove(pcl::PointIndices &surface_indices) {
@@ -84,11 +89,15 @@ namespace designSpace {
 
             }
             surface_indices.indices.reserve(indices_->size());
+            ground_indices_->reserve(indices_->size()*ground_height_/(max_z - min_z));
+            ground_indices_->clear();
             switch(axis_){
                 case 'z':{
                     for (size_t i = 0; i < indices_->size(); i++) {
                         if(input_->points[(*indices_)[i]].z >= min_z+ground_height_){
                             surface_indices.indices.push_back((*indices_)[i]);
+                        } else{
+                            ground_indices_->push_back((*indices_)[i]);
                         }
                     }
                     break;
@@ -112,6 +121,7 @@ namespace designSpace {
         float ground_height_;
         char axis_;
 
+        IndicesPtr ground_indices_;
     };
 }
 

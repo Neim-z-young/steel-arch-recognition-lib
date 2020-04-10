@@ -29,7 +29,8 @@ public:
 
     DBSCAN(): tree_(),
               radius_(0),
-              min_pts_per_core_object(1)
+              min_pts_per_core_object(1),
+              max_cluster_inx_(-1)
     {}
 
     void extract(std::vector<pcl::PointIndices> &clusters) {
@@ -41,6 +42,7 @@ public:
             return;
         }
 
+        clusters.clear();
         tree_->setInputCloud(input_, indices_);
 
         std::vector<bool> processed ((*input_).points.size (), false);
@@ -74,6 +76,16 @@ public:
                 clusters.push_back(*indices);
             }
         }
+        //TODO 找到最大聚类
+        int max_size = 0;
+        max_cluster_inx_ = 0;
+        for (size_t i = 0; i < clusters.size(); i++) {
+            size_t size = clusters[i].indices.size();
+            if (max_size < size) {
+                max_size = size;
+                max_cluster_inx_ = i;
+            }
+        }
     }
 
     void printMsg() {
@@ -104,6 +116,10 @@ public:
         min_pts_per_core_object = minPtsPerCoreObject;
     }
 
+    int getMaxClusterInx() const {
+        return max_cluster_inx_;
+    }
+
 protected:
     // Members derived from the base class
     using BasePCLBase::input_;
@@ -119,6 +135,8 @@ protected:
 
     /** min points to obtain core object. */
     int min_pts_per_core_object;
+
+    int max_cluster_inx_;
 
     /** \brief Class getName method. */
     virtual std::string getClassName () const { return ("DBSCAN_cluster"); }

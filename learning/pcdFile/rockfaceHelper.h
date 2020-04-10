@@ -123,10 +123,16 @@ namespace designSpace {
             curvatures_.reserve(size);
             heights_.reserve(size);
             for (size_t i = 0; i < size; i++) {
-                curvatures_.push_back(
-                        calculateAvgCurvature(segment_indices_[i], ceil(segment_indices_[i]->size() / 10.f)));
-                heights_.push_back(
-                        calculateAvgHeight(segment_indices_[i], ceil(segment_indices_[i]->size() / 10.f)));
+                if((*segment_indices_[i]).size()>0) {
+                    curvatures_.push_back(
+                            calculateAvgCurvature(segment_indices_[i], ceil(segment_indices_[i]->size() / 10.f)));
+                    heights_.push_back(
+                            calculateAvgHeight(segment_indices_[i], ceil(segment_indices_[i]->size() / 10.f)));
+                } else{
+                    assert(i>0);
+                    curvatures_.push_back(curvatures_[i-1]);
+                    heights_.push_back(heights_[i-1]);
+                }
             }
 
             //DASST(Differential Analysis method for the Section Sequences of the Tunnel point cloud)
@@ -134,8 +140,8 @@ namespace designSpace {
 
             min_m1_ = removeWorkface(max_m1_+1, rockface_point_indices.indices);
 
+            //返回混凝土表面与岩石表面的分隔段
             return max_m1_;
-            //TODO
         }
 
         int removeConcrete(std::vector<int> &rock_and_work_face_indices, bool direct_strategy) {
@@ -161,7 +167,7 @@ namespace designSpace {
             avg_curvature /= float(max_m1);
             threshold = avg_curvature * 3.f;
 
-            rock_and_work_face_indices.reserve(input_->size()/30); //TODO fix it by using indices_
+            rock_and_work_face_indices.reserve(indices_->size()/30); //TODO fix it by using indices_
 
             if (direct_strategy) { //直接筛选
                 for (size_t i = max_m1; i < size; i++) {
@@ -278,27 +284,27 @@ namespace designSpace {
         using BasePCLBase::deinitCompute;
 
         //将点云沿轴分段
-        void cloudSegmentAloneAxis(Segments &indices) {
+        void cloudSegmentAloneAxis(Segments &seg_indices) {
             float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = -FLT_MAX, min_y = FLT_MAX, max_y = -FLT_MAX, min_z = FLT_MAX, max_z = -FLT_MAX;
-            for (size_t i = 0; i < input_->points.size(); i++) {
-                min_x = fmin(min_x, input_->points[i].x);
-                min_y = fmin(min_y, input_->points[i].y);
-                min_z = fmin(min_z, input_->points[i].z);
+            for (const int& index:*indices_) {
+                min_x = fmin(min_x, input_->points[index].x);
+                min_y = fmin(min_y, input_->points[index].y);
+                min_z = fmin(min_z, input_->points[index].z);
 
-                max_x = fmax(max_x, input_->points[i].x);
-                max_y = fmax(max_y, input_->points[i].y);
-                max_z = fmax(max_z, input_->points[i].z);
+                max_x = fmax(max_x, input_->points[index].x);
+                max_y = fmax(max_y, input_->points[index].y);
+                max_z = fmax(max_z, input_->points[index].z);
             }
             switch (axis_) {
                 case 'x': {
                     int k = ceil((max_x - min_x) / segment_length_);
-                    indices.reserve(k);
+                    seg_indices.reserve(k);
                     for (int i = 0; i < k; i++) {
-                        indices.emplace_back(new std::vector<int>);
+                        seg_indices.emplace_back(new std::vector<int>);
                     }
-                    for (size_t i = 0; i < input_->points.size(); i++) {
-                        int index = floor((input_->points[i].x - min_x) / segment_length_);
-                        indices[index]->push_back(i);
+                    for (const int& inx:*indices_) {
+                        int index = floor((input_->points[inx].x - min_x) / segment_length_);
+                        seg_indices[index]->push_back(inx);
                     }
                     break;
                 }

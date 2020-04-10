@@ -24,6 +24,7 @@
 //user lib
 #include "rockfaceHelper.h"
 #include "../designLib/tunnelTool.h"
+#include "pclDBSCAN.h"
 using designSpace::_PARAM_;
 
 int main(int, char **argv) {
@@ -92,6 +93,18 @@ int main(int, char **argv) {
     std::cout << "finish to extract rockface. time: "<<(end-start)<<" second"<<std::endl;
     designSpace::RockfaceExtraction<pcl::PointXYZRGB>::IndicesConstPtr m1_indices =
             rockfaceExtraction.getSegmentIndices()[seg_inx];
+
+    //对提取出的岩石表面再次聚类(DBSCAN)
+    designSpace::DBSCAN<pcl::PointXYZRGB> dbscan;
+    std::vector<pcl::PointIndices> cluster_indices;
+    dbscan.setInputCloud(clustered_color_cloud);
+    dbscan.setIndices(rockface_indices_ptr);
+    dbscan.setTree(tree);
+    dbscan.setRadius(_PARAM_.RADIUS_DBSCAN_);
+    dbscan.setMinPtsPerCoreObject(_PARAM_.MIN_PTS_);
+    dbscan.extract(cluster_indices);
+    int max_inx = dbscan.getMaxClusterInx();
+    rockface_indices_ptr = boost::make_shared<pcl::PointIndices>(cluster_indices[max_inx]);
 
     std::cout<<"extracted size: "<<rockface_indices_ptr->indices.size()<<std::endl;
 

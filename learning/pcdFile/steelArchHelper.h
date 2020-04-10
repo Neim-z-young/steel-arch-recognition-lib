@@ -82,7 +82,8 @@ namespace designSpace {
                 seed_points_(),
                 optimal_points_(),
                 view_point_(),
-                normals_(new pcl::PointCloud<pcl::Normal>()){}
+                normals_(new pcl::PointCloud<pcl::Normal>()),
+                estimated_tunnel_radius_(1.f){}
 
 
         char getAxis() const {
@@ -204,7 +205,8 @@ namespace designSpace {
                 //所有的最优点都是通过插值法插入到原始点云图中的
                 optimal_points_.push_back(optimal);
 
-                int it = 3000;
+                //迭代次数约为隧道内周长/生长步长
+                int it = 2*M_PI*estimated_tunnel_radius_/(2*arch_thickness_);
                 bool grow = true;
                 //迭代生长
                 while (grow) {
@@ -249,13 +251,17 @@ namespace designSpace {
                     } else{
                         optimal = seed_points_[index];
                     }
-                    optimal_points_.push_back(optimal);
+
+                    //排除不在点云上的点
+                    if(initial_points_[index].z <= optimal.z){
+                        optimal_points_.push_back(optimal);
+                    }
 
                     if(calculateAndConvertAngle(optimal.z, optimal.y) <= end_angle_){
                         //TODO 终止条件
                         grow = false;
                     }
-                    if(it-- == 0){
+                    if(it-- < 0){
                         grow = false;
                     }
                 }
@@ -295,7 +301,7 @@ namespace designSpace {
             s_point.y = -1.;
             s_point.z = -1.;
 
-            float min_x = FLT_MAX, min_z = FLT_MAX, max_x = FLT_MIN;
+            float min_x = FLT_MAX, min_z = FLT_MAX, max_x = FLT_MIN, max_y = -FLT_MAX, min_y = FLT_MAX;
             for(const int& index : *indices_){
                 const PointT& tmp = input_->points[index];
                 if(tmp.y<0 && tmp.z<0 && measureStartPoint(s_point)>measureStartPoint(tmp)){
@@ -309,11 +315,17 @@ namespace designSpace {
                 if(max_x<tmp.x){
                     max_x = tmp.x;
                 }
+                if(min_y>tmp.y){
+                    min_y = tmp.y;
+                }
+                if(max_y<tmp.y){
+                    max_y = tmp.y;
+                }
                 if(min_z>tmp.z){
                     min_z = tmp.z;
                 }
             }
-
+            estimated_tunnel_radius_ = (max_y - min_y)/2;
             start_angle_ = calculateAndConvertAngle(s_point.z, s_point.y);
             end_angle_ = calculateAndConvertAngle(s_point.z, -s_point.y);
 
@@ -454,6 +466,7 @@ namespace designSpace {
         /** 初始估计钢拱位置相对于起点的距离 */
         float start_arch_gap_;
 
+        float estimated_tunnel_radius_;
 
         /** 初始化点 */
         std::vector<PointT, Eigen::aligned_allocator<PointT>> initial_points_;

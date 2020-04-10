@@ -27,6 +27,7 @@
 
 //user lib
 #include "../designLib/tunnelTool.h"
+#include "groundHelper.h"
 
 using designSpace::_PARAM_;
 namespace designSpace {
@@ -127,6 +128,16 @@ namespace designSpace {
                     //与x轴坐标无关
                     int idx = ijk1 * divb_mul_[1] + ijk2 * divb_mul_[2];
                     voxel_map[idx] += 1;
+                } else if (plane_.compare("xoy") == 0) {
+                    // Compute the centroid leaf index
+                    //与z轴坐标无关
+                    int idx = ijk0 * divb_mul_[0] + ijk1 * divb_mul_[1];
+                    voxel_map[idx] += 1;
+                } else { //xoz
+                    // Compute the centroid leaf index
+                    //与y轴坐标无关
+                    int idx = ijk0 * divb_mul_[0] + ijk2 * divb_mul_[2];
+                    voxel_map[idx] += 1;
                 }
             }
 
@@ -134,7 +145,7 @@ namespace designSpace {
             for (auto pair:voxel_map) {
                 f_value += float(pair.second * pair.second);
             }
-            return f_value / voxel_map.size();
+            return f_value / (voxel_map.size()*voxel_map.size());  //修改评估策略
         }
 
         // Members derived from the base class
@@ -187,7 +198,8 @@ namespace designSpace {
                         angle_step_(3.f),
                         start_angle_(0.f),
                         end_angle_(360.f),
-                        calibrated_cloud_(new pcl::PointCloud<PointT>){}
+                        calibrated_cloud_(new pcl::PointCloud<PointT>),
+                        ground_height_(0.f) {}
 
         char getRotatingAxis() const {
             return rotating_axis_;
@@ -237,6 +249,14 @@ namespace designSpace {
             end_angle_ = endAngle;
         }
 
+        float getGroundHeight() const {
+            return ground_height_;
+        }
+
+        void setGroundHeight(float groundHeight) {
+            ground_height_ = groundHeight;
+        }
+
         //使用旋转投影密度方差法(RPDV)
         void calibrate(PointCloudPtr &cloudPtr) {
 
@@ -245,26 +265,14 @@ namespace designSpace {
                 (indices_ && indices_->empty())) {
                 return;
             }
-            initailCalibrate();
+            initialCalibrate();
 
             //TODO 设定旋转轴
+            settingRotateAxis();
 
             //调整其他轴
-            float angle = start_angle_;
-            evaluate_value_.resize(std::floor((end_angle_ - start_angle_) / angle_step_));
-            for (; angle < end_angle_; angle += angle_step_) {
-                rotateAngle(angle);
-                evaluate_value_[std::floor((angle - start_angle_) / angle_step_)] = evaluate();
-            }
-            float max_f = -FLT_MAX, best_angle = start_angle_;
-            for (size_t i = 0; i < evaluate_value_.size(); i++) {
-                if (evaluate_value_[i] > max_f) {
-                    max_f = evaluate_value_[i];
-                    best_angle = i;
-                }
-            }
-            best_angle = start_angle_ + best_angle * angle_step_;
-            rotateAngle(best_angle);
+            float best_angle = settingOtherAxis();
+            rotateAngle(best_angle, rotating_axis_);
             cloudPtr = calibrated_cloud_;
         }
 
@@ -283,8 +291,10 @@ namespace designSpace {
                 evaluate_Y_value.push_back(evaluate_value_[i]);
 
             }
-            plot->addPlotData(X_value, evaluate_Y_value, "angle evaluate value", vtkChart::LINE);
-            plot->plot();
+            if (size > 0) {
+                plot->addPlotData(X_value, evaluate_Y_value, "angle evaluate value", vtkChart::LINE);
+                plot->plot();
+            }
         }
 
     protected:
@@ -294,18 +304,75 @@ namespace designSpace {
         using BasePCLBase::initCompute;
         using BasePCLBase::deinitCompute;
 
-        void initailCalibrate() {
+        void initialCalibrate() {
             calibrated_cloud_->resize(input_->size());
             pcl::copyPointCloud(*input_, *calibrated_cloud_);
         }
 
-        void rotateAngle(float angle) {
+        void settingRotateAxis() {
+            assert(calibrated_cloud_->size() == input_->size());
+            GroundRemoval<PointT> groundRemoval;
+            groundRemoval.setInputCloud(calibrated_cloud_);
+            groundRemoval.setIndices(indices_);
+            groundRemoval.setGroundHeight(ground_height_);
+            groundRemoval.setAxis(rotating_axis_);
+            pcl::PointIndices tmp_indices;
+            groundRemoval.remove(tmp_indices);
+            if (rotating_axis_ == 'z') {
+                //使地面与xoy面平行
+                IndicesConstPtr ground_indices = groundRemoval.getGroundIndices();
+                float nx, ny, nz;  //平面的法向量
+                float curvature;
+                pcl::NormalEstimation<PointT, pcl::Normal> ne;
+                ne.computePointNormal(*calibrated_cloud_, *ground_indices, nx, ny, nz, curvature);
+
+                PointT p(calibrated_cloud_->points[(*ground_indices)[0]]);
+                float x = 0 - p.x, y = 0 - p.y, z = 0 - p.z; //TODO 修改视点
+                if (nx * x + ny * y + nz * z < 0) {
+                    nx = -nx;
+                    ny = -ny;
+                    nz = -nz;
+                }
+                float angle_x = std::atan2(ny, nz) * 180 / M_PI, angle_y = std::atan2(nx, nz) * 180 / M_PI;
+                //将平面法向旋转至与z轴（0,0,1）平行
+                rotateAngle(angle_x, 'x');
+                rotateAngle(angle_y, 'y');
+            }
+        }
+
+        float settingOtherAxis() {
+            float angle = start_angle_;
+            evaluate_value_.resize(std::floor((end_angle_ - start_angle_) / angle_step_));
+            for (; angle < end_angle_; angle += angle_step_) {
+                rotateAngle(angle, rotating_axis_);
+                evaluate_value_[std::floor((angle - start_angle_) / angle_step_)] = evaluate();
+            }
+            float max_f = -FLT_MAX, best_angle = start_angle_;
+            for (size_t i = 0; i < evaluate_value_.size(); i++) {
+                if (evaluate_value_[i] > max_f) {
+                    max_f = evaluate_value_[i];
+                    best_angle = i;
+                }
+            }
+            best_angle = start_angle_ + best_angle * angle_step_;
+            return best_angle;
+        }
+
+        void rotateAngle(float angle, char axis) {
             assert(calibrated_cloud_->size() == input_->size());
             float u, v, w;
-            if (rotating_axis_ == 'z') {
+            if (axis == 'z') {
                 u = 0.f;
                 v = 0.f;
                 w = 1.f;
+            } else if (axis == 'y') {
+                u = 0.f;
+                v = 1.f;
+                w = 0.f;
+            } else {//x
+                u = 1.f;
+                v = 0.f;
+                w = 0.f;
             }
             float cos = std::cos(angle * M_PI / 180);
             float sin = std::sin(angle * M_PI / 180);
@@ -321,7 +388,7 @@ namespace designSpace {
         inline PointT multiplyByMatrix(const PointT &origin, const Eigen::Matrix3f &mat) {
             PointT t(origin);
             Eigen::Vector3f res(origin.x, origin.y, origin.z);
-            res =  mat*res;
+            res = mat * res;
             t.x = res(0);
             t.y = res(1);
             t.z = res(2);
@@ -355,6 +422,8 @@ namespace designSpace {
         float angle_step_;
         float start_angle_;
         float end_angle_;
+
+        float ground_height_;
     };
 }
 

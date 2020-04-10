@@ -50,17 +50,19 @@ int main(int, char **argv) {
     calibration.setInputCloud(clustered_color_cloud);
     calibration.setIndices(clustered_indices);
     calibration.setProjectionGridSize(_PARAM_.ARCH_STEEL_THICKNESS_);
-    calibration.setStartAngle(-50.f);
-    calibration.setAngleStep(3.f);
-    calibration.setEndAngle(50.f);
+    calibration.setStartAngle(-10.f);
+    calibration.setAngleStep(1.f);
+    calibration.setEndAngle(10.f);
+    calibration.setGroundHeight(_PARAM_.GROUND_HEIGHT_);
 
     start = time(nullptr);
     std::cout << "start to calibrate: "<<std::endl;
+    calibration.setProjectionPlane("yoz");
+    calibration.setRotatingAxis('z');
     calibration.calibrate(calibrated_cloud);
     end = time(nullptr);
 
     std::cout << "finish to calibrate. time: "<<(end-start)<<" second"<<std::endl;
-
 
     float x = 0, y = 0, z = 0;
     for(size_t i=0; i<calibrated_cloud->points.size(); i++){
@@ -72,6 +74,7 @@ int main(int, char **argv) {
     y/=calibrated_cloud->points.size();
     z/=calibrated_cloud->points.size();
 
+    std::cout<<"X: "<<x<<" Y: "<<y<<" Z: "<<z<<std::endl;
 //    pcl::visualization::CloudViewer viewer("Cloud Viewer");//创建viewer对象
 
     std::string path, name;

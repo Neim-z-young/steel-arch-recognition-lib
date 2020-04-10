@@ -35,7 +35,7 @@ namespace designSpace {
                 RADIUS_FOR_C_N_(ARCH_STEEL_GAP_),
                 K_FOR_C_N_(3*RADIUS_FOR_C_N_/VOXEL_SIZE_),
                 RADIUS_DBSCAN_(2.f*ARCH_STEEL_THICKNESS_), //0.3f * SCALE_FACTOR_ * MULTIPLE_
-                MIN_PTS_(2*RADIUS_DBSCAN_/VOXEL_SIZE_),  //200
+                MIN_PTS_(3*RADIUS_DBSCAN_*RADIUS_DBSCAN_/(VOXEL_SIZE_* VOXEL_SIZE_)),  //200
                 CONCRETE_FACE_STEP_(3 * ARCH_STEEL_GAP_ / SEGMENT_LENGTH_),
                 WORK_FACE_STEP_(1 * ARCH_STEEL_GAP_ / SEGMENT_LENGTH_),
                 GROUND_HEIGHT_(0.7f * MULTIPLE_){}
