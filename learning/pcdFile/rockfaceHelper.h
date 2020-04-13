@@ -109,11 +109,11 @@ namespace designSpace {
         }
 
         //提取出岩石表面
-        int extract(pcl::PointIndices &rockface_point_indices) {
+        void extract(pcl::PointIndices &rockface_point_indices, int& m1, int& m2) {
             if (!initCompute() ||
                 (input_ && input_->points.empty()) ||
                 (indices_ && indices_->empty())) {
-                return -1;
+                return;
             }
             cloudSegmentAloneAxis(segment_indices_);
 
@@ -140,15 +140,16 @@ namespace designSpace {
 
             min_m1_ = removeWorkface(max_m1_+1, rockface_point_indices.indices);
 
-            //返回混凝土表面与岩石表面的分隔段
-            return max_m1_;
+            //返回混凝土表面、工作表面与岩石表面的分隔段
+            m1 = max_m1_;
+            m2 = min_m1_;
         }
 
         int removeConcrete(std::vector<int> &rock_and_work_face_indices, bool direct_strategy) {
             //防止错误调用
             assert(curvatures_.size()!=0);
 
-            int step = _PARAM_.CONCRETE_FACE_STEP_; //3*Wa/Wd
+            int step = _PARAM_->CONCRETE_FACE_STEP_; //3*Wa/Wd
             int max_m1 = 0;
             float max_g_vaue = -FLT_MAX;
             size_t size = curvatures_.size();
@@ -192,7 +193,7 @@ namespace designSpace {
         int removeWorkface(int start_segment, std::vector<int>& rockface_indices){
             assert(heights_.size()!=0);
 
-            int step = _PARAM_.WORK_FACE_STEP_; //差分步数
+            int step = _PARAM_->WORK_FACE_STEP_; //差分步数
             int min_m1 = start_segment;
             float min_g_vaue = FLT_MAX;
             size_t size = heights_.size();
@@ -210,7 +211,7 @@ namespace designSpace {
                 avg_height += heights_[i];
             }
             avg_height /= float(min_m1 - start_segment);
-            threshold = _PARAM_.ARCH_STEEL_THICKNESS_*1.5f; //TODO 阈值设定
+            threshold = _PARAM_->ARCH_STEEL_THICKNESS_*2.f; //TODO 阈值设定
 
             //采用高度阈值法筛选
             for (size_t i = start_segment; i < min_m1; i++) {
@@ -237,7 +238,7 @@ namespace designSpace {
             for (size_t i = 0; i < seg_size; i++) {
                 X_value.push_back(i);
                 curvature_Y_value.push_back(curvatures_[i]);
-                int step = _PARAM_.CONCRETE_FACE_STEP_; //修改步数
+                int step = _PARAM_->CONCRETE_FACE_STEP_; //修改步数
                 if (i + step < seg_size) {
                     g_Y_value.push_back(g_function(curvatures_, i, step));
                 } else {
@@ -264,7 +265,7 @@ namespace designSpace {
             for (size_t i = start_seg; i < seg_size; i++) {
                 X_value.push_back(i);
                 height_Y_value.push_back(heights_[i]);
-                int step = _PARAM_.WORK_FACE_STEP_; //修改步数
+                int step = _PARAM_->WORK_FACE_STEP_; //修改步数
                 if (i + step < seg_size) {
                     g_Y_value.push_back(g_function(heights_, i, step));
                 } else {

@@ -48,9 +48,9 @@ int main(int, char **argv) {
     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZ>);
     dbscan.setInputCloud(cloud);
     //TODO setIndices()
-    dbscan.setRadius(_PARAM_.RADIUS_DBSCAN_);
+    dbscan.setRadius(_PARAM_->RADIUS_DBSCAN_);
     dbscan.setTree(tree);
-    dbscan.setMinPtsPerCoreObject(_PARAM_.MIN_PTS_);
+    dbscan.setMinPtsPerCoreObject(_PARAM_->MIN_PTS_);
     dbscan.extract(cluster_indices);
 
     std::cout << "cluster size: " << cluster_indices.size() << std::endl;

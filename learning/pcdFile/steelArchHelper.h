@@ -225,7 +225,7 @@ namespace designSpace {
                     //寻找可能的钢拱点
                     std::vector<int> k_indices;
                     std::vector<float> k_sqr_distances;
-                    float voxelSize = _PARAM_.VOXEL_SIZE_; //使用常数
+                    float voxelSize = _PARAM_->VOXEL_SIZE_; //使用常数
                     size_t max_salient_points = ceil(2 * arch_thickness_ / voxelSize);
                     //搜索半径有区别
                     tree_->radiusSearch(seed_points_[index], 2*arch_thickness_, k_indices, k_sqr_distances, 5*max_salient_points);
@@ -283,8 +283,8 @@ namespace designSpace {
         void preCalculateNormals(){
             //计算点云法向
             pcl::NormalEstimation<pcl::PointXYZRGB, pcl::Normal> ne;
+            //计算输入点云中所有点的法向量
             ne.setInputCloud(input_);
-            ne.setIndices(indices_);
             ne.setViewPoint(view_point_.x, view_point_.y, view_point_.z);
             ne.setSearchMethod(tree_);
             ne.setKSearch(k_);

@@ -78,21 +78,25 @@ int main(int, char **argv) {
     rockfaceExtraction.setInputCloud(clustered_color_cloud);
     rockfaceExtraction.setTree(tree);
     rockfaceExtraction.setAxis('x');
-    rockfaceExtraction.setRadius(_PARAM_.RADIUS_FOR_C_N_);
-    rockfaceExtraction.setK(_PARAM_.K_FOR_C_N_);
-    rockfaceExtraction.setSegmentLength(_PARAM_.SEGMENT_LENGTH_);
+    rockfaceExtraction.setRadius(_PARAM_->RADIUS_FOR_C_N_);
+    rockfaceExtraction.setK(_PARAM_->K_FOR_C_N_);
+    rockfaceExtraction.setSegmentLength(_PARAM_->SEGMENT_LENGTH_);
 
 
     pcl::PointIndices::Ptr rockface_indices_ptr(new pcl::PointIndices);
 
     start = time(nullptr);
     std::cout << "start to extract rockface: "<<std::endl;
-    int seg_inx = rockfaceExtraction.extract(*rockface_indices_ptr);
+    int seg_m1, seg_m2;
+    rockfaceExtraction.extract(*rockface_indices_ptr, seg_m1, seg_m2);
     end = time(nullptr);
 
     std::cout << "finish to extract rockface. time: "<<(end-start)<<" second"<<std::endl;
     designSpace::RockfaceExtraction<pcl::PointXYZRGB>::IndicesConstPtr m1_indices =
-            rockfaceExtraction.getSegmentIndices()[seg_inx];
+            rockfaceExtraction.getSegmentIndices()[seg_m1];
+
+    designSpace::RockfaceExtraction<pcl::PointXYZRGB>::IndicesConstPtr m2_indices =
+            rockfaceExtraction.getSegmentIndices()[seg_m2];
 
     //对提取出的岩石表面再次聚类(DBSCAN)
     designSpace::DBSCAN<pcl::PointXYZRGB> dbscan;
@@ -100,8 +104,8 @@ int main(int, char **argv) {
     dbscan.setInputCloud(clustered_color_cloud);
     dbscan.setIndices(rockface_indices_ptr);
     dbscan.setTree(tree);
-    dbscan.setRadius(_PARAM_.RADIUS_DBSCAN_);
-    dbscan.setMinPtsPerCoreObject(_PARAM_.MIN_PTS_);
+    dbscan.setRadius(_PARAM_->RADIUS_DBSCAN_);
+    dbscan.setMinPtsPerCoreObject(_PARAM_->MIN_PTS_);
     dbscan.extract(cluster_indices);
     int max_inx = dbscan.getMaxClusterInx();
     rockface_indices_ptr = boost::make_shared<pcl::PointIndices>(cluster_indices[max_inx]);
@@ -128,6 +132,12 @@ int main(int, char **argv) {
      G = 10;
      B = 200;
     for(int t:*m1_indices){
+        clustered_color_cloud->points[t].r = R;
+        clustered_color_cloud->points[t].g = G;
+        clustered_color_cloud->points[t].b = B;
+    }
+    //找到高度查分变化最大的段
+    for(int t:*m2_indices){
         clustered_color_cloud->points[t].r = R;
         clustered_color_cloud->points[t].g = G;
         clustered_color_cloud->points[t].b = B;

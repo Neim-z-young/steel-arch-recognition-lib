@@ -57,7 +57,7 @@ int main(int, char **argv) {
     designSpace::GroundRemoval<pcl::PointXYZRGB> groundRemoval;
     pcl::PointIndices::Ptr remain_indices_ptr(new pcl::PointIndices);
     groundRemoval.setAxis('z');
-    groundRemoval.setGroundHeight(_PARAM_.GROUND_HEIGHT_);
+    groundRemoval.setGroundHeight(_PARAM_->GROUND_HEIGHT_);
     groundRemoval.setInputCloud(clustered_color_cloud);
     groundRemoval.setIndices(cluster_indices);
 

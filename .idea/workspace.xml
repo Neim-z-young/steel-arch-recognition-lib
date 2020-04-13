@@ -2,15 +2,15 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="pclDemo" targetName="show_pcd_file" />
-      <config projectName="pclDemo" targetName="spin_images" />
-      <config projectName="pclDemo" targetName="voxelization" />
-      <config projectName="pclDemo" targetName="cluster" />
-      <config projectName="pclDemo" targetName="ground_remove" />
-      <config projectName="pclDemo" targetName="rockface_extraction" />
-      <config projectName="pclDemo" targetName="steel_arch_extraction" />
-      <config projectName="pclDemo" targetName="calibration" />
       <config projectName="pclDemo" targetName="pclDemo" />
+      <config projectName="pclDemo" targetName="calibration" />
+      <config projectName="pclDemo" targetName="voxelization" />
+      <config projectName="pclDemo" targetName="rockface_extraction" />
+      <config projectName="pclDemo" targetName="spin_images" />
+      <config projectName="pclDemo" targetName="show_pcd_file" />
+      <config projectName="pclDemo" targetName="steel_arch_extraction" />
+      <config projectName="pclDemo" targetName="ground_remove" />
+      <config projectName="pclDemo" targetName="cluster" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -20,16 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/learning/designLib/tunnelTool.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/learning/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/designLib/tunnelTool.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/designLib/tunnelTool.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/calibratingTool.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/calibratingTool.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/calibration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/calibration.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/clusterByDBSCAN.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/clusterByDBSCAN.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/groundHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/groundHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/pclDBSCAN.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/pclDBSCAN.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/pcdFile/groundRemove.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/groundRemove.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/rockfaceExtraction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/rockfaceExtraction.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/pcdFile/voxelization.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/voxelization.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,8 +94,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.rockface_extraction">
-    <configuration name="calibration" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_clustered_voxelization_3.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="calibration" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="calibration">
+  <component name="RunManager" selected="CMake Application.steel_arch_extraction">
+    <configuration name="calibration" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_clustered_voxelization_4.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="calibration" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="calibration">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -112,7 +115,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="rockface_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/groundRemoved_calibrated_rgb_clustered_voxelization_3.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="rockface_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="rockface_extraction">
+    <configuration name="rockface_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/groundRemoved_calibrated_rgb_clustered_voxelization_4.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="rockface_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="rockface_extraction">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -127,7 +130,7 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="steel_arch_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rockface_groundRemoved_calibrated_rgb_clustered_voxelization_3.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="steel_arch_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="steel_arch_extraction">
+    <configuration name="steel_arch_extraction" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rockface_groundRemoved_calibrated_rgb_clustered_voxelization_4.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="steel_arch_extraction" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="steel_arch_extraction">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -209,11 +212,27 @@
       <workItem from="1586397855939" duration="4895000" />
       <workItem from="1586409681414" duration="1075000" />
       <workItem from="1586484620135" duration="12056000" />
+      <workItem from="1586612098566" duration="1084000" />
+      <workItem from="1586615536304" duration="359000" />
+      <workItem from="1586657250633" duration="2170000" />
+      <workItem from="1586678560633" duration="7692000" />
+      <workItem from="1586687475945" duration="1215000" />
+      <workItem from="1586741218932" duration="21040000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -237,14 +256,14 @@
           <option name="timeStamp" value="49" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h</url>
-          <line>206</line>
-          <option name="timeStamp" value="60" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h</url>
           <line>187</line>
           <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h</url>
+          <line>212</line>
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

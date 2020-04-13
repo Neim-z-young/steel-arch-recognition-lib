@@ -22,6 +22,7 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/visualization/pcl_plotter.h>
 #include <pcl/common/common.h>
+#include <pcl/filters/voxel_grid.h>
 
 #include <Eigen/Dense>
 

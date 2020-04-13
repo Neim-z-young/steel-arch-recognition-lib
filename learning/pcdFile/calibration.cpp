@@ -49,11 +49,11 @@ int main(int, char **argv) {
     designSpace::Calibration<pcl::PointXYZRGB> calibration;
     calibration.setInputCloud(clustered_color_cloud);
     calibration.setIndices(clustered_indices);
-    calibration.setProjectionGridSize(_PARAM_.ARCH_STEEL_THICKNESS_);
+    calibration.setProjectionGridSize(_PARAM_->ARCH_STEEL_THICKNESS_);
     calibration.setStartAngle(-10.f);
     calibration.setAngleStep(1.f);
     calibration.setEndAngle(10.f);
-    calibration.setGroundHeight(_PARAM_.GROUND_HEIGHT_);
+    calibration.setGroundHeight(_PARAM_->GROUND_HEIGHT_);
 
     start = time(nullptr);
     std::cout << "start to calibrate: "<<std::endl;
@@ -65,10 +65,10 @@ int main(int, char **argv) {
     std::cout << "finish to calibrate. time: "<<(end-start)<<" second"<<std::endl;
 
     float x = 0, y = 0, z = 0;
-    for(size_t i=0; i<calibrated_cloud->points.size(); i++){
-        x+=calibrated_cloud->points[i].x;
-        y+=calibrated_cloud->points[i].y;
-        z+=calibrated_cloud->points[i].z;
+    for(const int& inx : *clustered_indices){
+        x+=calibrated_cloud->points[inx].x;
+        y+=calibrated_cloud->points[inx].y;
+        z+=calibrated_cloud->points[inx].z;
     }
     x/=calibrated_cloud->points.size();
     y/=calibrated_cloud->points.size();

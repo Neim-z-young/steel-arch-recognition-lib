@@ -97,11 +97,11 @@ int main(int, char **argv) {
     pcl::search::KdTree<pcl::PointXYZRGB>::Ptr tree(new pcl::search::KdTree<pcl::PointXYZRGB>);
     steelArchExtraction.setInputCloud(rockface_cloud);
     steelArchExtraction.setIndices(rockface_indices);
-    steelArchExtraction.setK(_PARAM_.K_FOR_C_N_);
-    steelArchExtraction.setRadius(_PARAM_.RADIUS_FOR_C_N_);
+    steelArchExtraction.setK(_PARAM_->K_FOR_C_N_);
+    steelArchExtraction.setRadius(_PARAM_->RADIUS_FOR_C_N_);
     steelArchExtraction.setTree(tree);
-    steelArchExtraction.setArchThickness(_PARAM_.ARCH_STEEL_THICKNESS_);
-    steelArchExtraction.setSteelArchGap(_PARAM_.ARCH_STEEL_GAP_);
+    steelArchExtraction.setArchThickness(_PARAM_->ARCH_STEEL_THICKNESS_);
+    steelArchExtraction.setSteelArchGap(_PARAM_->ARCH_STEEL_GAP_);
     steelArchExtraction.setStartArchGap(0.);
     steelArchExtraction.setViewPoint(x, y, z);
 

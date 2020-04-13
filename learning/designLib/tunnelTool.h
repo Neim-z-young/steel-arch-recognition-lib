@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 namespace designSpace {
     class TunnelParameter {
@@ -76,7 +77,7 @@ namespace designSpace {
 
     };
 
-    TunnelParameter _PARAM_(1, 0.2, 30, 0.05);
+    extern  boost::shared_ptr<TunnelParameter> _PARAM_;
 };
 
 #endif //PCLDEMO_TUNNELTOOL_H

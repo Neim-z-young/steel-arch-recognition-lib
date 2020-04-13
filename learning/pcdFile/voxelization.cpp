@@ -34,11 +34,11 @@ int main(int, char** argv)
     pcl::VoxelGrid<pcl::PointXYZ> voxelGrid;
     voxelGrid.setInputCloud(cloud);
 
-    voxelGrid.setLeafSize(_PARAM_.VOXEL_SIZE_, _PARAM_.VOXEL_SIZE_, _PARAM_.VOXEL_SIZE_);
+    voxelGrid.setLeafSize(_PARAM_->VOXEL_SIZE_, _PARAM_->VOXEL_SIZE_, _PARAM_->VOXEL_SIZE_);
     voxelGrid.filter(*voxelFilterCloud);
 
     std::cout<<"before voxelization size is: "<<(*cloud).points.size()<<std::endl;
-    std::cout << "Voxel size is: " << _PARAM_.VOXEL_SIZE_ << std::endl;
+    std::cout << "Voxel size is: " << _PARAM_->VOXEL_SIZE_ << std::endl;
     std::cout<<"After voxellization size is: "<<(*voxelFilterCloud).points.size()<<std::endl;
 
     std::string path, name;
