@@ -2,15 +2,15 @@
 <project version="4">
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="pclDemo" targetName="pclDemo" />
-      <config projectName="pclDemo" targetName="calibration" />
+      <config projectName="pclDemo" targetName="show_pcd_file" />
+      <config projectName="pclDemo" targetName="spin_images" />
       <config projectName="pclDemo" targetName="voxelization" />
       <config projectName="pclDemo" targetName="rockface_extraction" />
-      <config projectName="pclDemo" targetName="spin_images" />
-      <config projectName="pclDemo" targetName="show_pcd_file" />
-      <config projectName="pclDemo" targetName="steel_arch_extraction" />
-      <config projectName="pclDemo" targetName="ground_remove" />
       <config projectName="pclDemo" targetName="cluster" />
+      <config projectName="pclDemo" targetName="ground_remove" />
+      <config projectName="pclDemo" targetName="calibration" />
+      <config projectName="pclDemo" targetName="steel_arch_extraction" />
+      <config projectName="pclDemo" targetName="pclDemo" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -20,19 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/learning/designLib/tunnelTool.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/learning/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/designLib/tunnelTool.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/designLib/tunnelTool.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/calibratingTool.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/calibratingTool.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/calibration.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/calibration.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/clusterByDBSCAN.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/clusterByDBSCAN.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/groundRemove.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/groundRemove.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/rockfaceExtraction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/rockfaceExtraction.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learning/pcdFile/voxelization.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/voxelization.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/pcdFile/pclDBSCAN.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/pclDBSCAN.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -218,6 +208,8 @@
       <workItem from="1586678560633" duration="7692000" />
       <workItem from="1586687475945" duration="1215000" />
       <workItem from="1586741218932" duration="21040000" />
+      <workItem from="1586829690736" duration="6125000" />
+      <workItem from="1586915504094" duration="2710000" />
     </task>
     <servers />
   </component>

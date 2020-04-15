@@ -78,7 +78,7 @@ public:
         }
         //TODO 找到最大聚类
         int max_size = 0;
-        max_cluster_inx_ = 0;
+        max_cluster_inx_ = -1;
         for (size_t i = 0; i < clusters.size(); i++) {
             size_t size = clusters[i].indices.size();
             if (max_size < size) {

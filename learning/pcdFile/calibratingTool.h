@@ -200,7 +200,11 @@ namespace designSpace {
                         start_angle_(0.f),
                         end_angle_(360.f),
                         calibrated_cloud_(new pcl::PointCloud<PointT>),
-                        ground_height_(0.f) {}
+                        ground_height_(0.f),
+                        view_point_(),
+                        angle_x_(0.f),
+                        angle_y_(0.f),
+                        angle_z_(0.f){}
 
         char getRotatingAxis() const {
             return rotating_axis_;
@@ -258,6 +262,36 @@ namespace designSpace {
             ground_height_ = groundHeight;
         }
 
+        void setViewPoint(float x, float y, float z){
+            view_point_.x = x;
+            view_point_.y = y;
+            view_point_.z = z;
+        }
+
+        float getAngleX() const {
+            return angle_x_;
+        }
+
+        void setAngleX(float angleX) {
+            angle_x_ = angleX;
+        }
+
+        float getAngleY() const {
+            return angle_y_;
+        }
+
+        void setAngleY(float angleY) {
+            angle_y_ = angleY;
+        }
+
+        float getAngleZ() const {
+            return angle_z_;
+        }
+
+        void setAngleZ(float angleZ) {
+            angle_z_ = angleZ;
+        }
+
         //使用旋转投影密度方差法(RPDV)
         void calibrate(PointCloudPtr &cloudPtr) {
 
@@ -274,6 +308,27 @@ namespace designSpace {
             //调整其他轴
             float best_angle = settingOtherAxis();
             rotateAngle(best_angle, rotating_axis_);
+            angle_z_ = best_angle;
+            cloudPtr = calibrated_cloud_;
+        }
+
+        //恢复标定前的点云。必须设定旋转角度
+        void restore(PointCloudPtr &cloudPtr){
+            if (!initCompute() ||
+                (input_ && input_->points.empty()) ||
+                (indices_ && indices_->empty())) {
+                return;
+            }
+            initialCalibrate();
+            if(FLT_EPSILON<fabs(angle_x_)){
+                rotateAngle(-angle_x_, 'x');
+            }
+            if(FLT_EPSILON<fabs(angle_y_)){
+                rotateAngle(-angle_y_, 'y');
+            }
+            if(FLT_EPSILON<fabs(angle_z_)){
+                rotateAngle(-angle_z_, 'z');
+            }
             cloudPtr = calibrated_cloud_;
         }
 
@@ -306,6 +361,7 @@ namespace designSpace {
         using BasePCLBase::deinitCompute;
 
         void initialCalibrate() {
+            calibrated_cloud_.reset(new pcl::PointCloud<PointT>);
             calibrated_cloud_->resize(input_->size());
             pcl::copyPointCloud(*input_, *calibrated_cloud_);
         }
@@ -328,7 +384,7 @@ namespace designSpace {
                 ne.computePointNormal(*calibrated_cloud_, *ground_indices, nx, ny, nz, curvature);
 
                 PointT p(calibrated_cloud_->points[(*ground_indices)[0]]);
-                float x = 0 - p.x, y = 0 - p.y, z = 0 - p.z; //TODO 修改视点
+                float x = view_point_.x - p.x, y = view_point_.y - p.y, z = view_point_.z - p.z; //修改视点
                 if (nx * x + ny * y + nz * z < 0) {
                     nx = -nx;
                     ny = -ny;
@@ -338,6 +394,9 @@ namespace designSpace {
                 //将平面法向旋转至与z轴（0,0,1）平行
                 rotateAngle(angle_x, 'x');
                 rotateAngle(angle_y, 'y');
+
+                angle_x_ = angle_x;
+                angle_y_ = angle_y;
             }
         }
 
@@ -423,6 +482,14 @@ namespace designSpace {
         float angle_step_;
         float start_angle_;
         float end_angle_;
+
+        //视点
+        PointT view_point_;
+
+        //旋转角，可用于恢复标定前的状态
+        float angle_x_;
+        float angle_y_;
+        float angle_z_;
 
         float ground_height_;
     };
