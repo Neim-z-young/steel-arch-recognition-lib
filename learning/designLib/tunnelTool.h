@@ -39,7 +39,8 @@ namespace designSpace {
                 MIN_PTS_(3*RADIUS_DBSCAN_*RADIUS_DBSCAN_/(VOXEL_SIZE_* VOXEL_SIZE_)),  //200
                 CONCRETE_FACE_STEP_(3 * ARCH_STEEL_GAP_ / SEGMENT_LENGTH_),
                 WORK_FACE_STEP_(1 * ARCH_STEEL_GAP_ / SEGMENT_LENGTH_),
-                GROUND_HEIGHT_(0.7f * MULTIPLE_){}
+                GROUND_HEIGHT_(0.7f * MULTIPLE_),
+                start_arch_shift_(0.f){}
 
         //放大倍数
         const float MULTIPLE_;
@@ -74,6 +75,7 @@ namespace designSpace {
 
 
         //钢拱提取
+        float start_arch_shift_;  //非常量，可在运行时设定
 
     };
 

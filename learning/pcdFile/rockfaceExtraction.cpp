@@ -92,6 +92,7 @@ int main(int, char **argv) {
     end = time(nullptr);
 
     std::cout << "finish to extract rockface. time: "<<(end-start)<<" second"<<std::endl;
+    std::cout << "calculated start shift: "<<rockfaceExtraction.calculateStartShift()/_PARAM_->MULTIPLE_<<"m."<<std::endl;
     designSpace::RockfaceExtraction<pcl::PointXYZRGB>::IndicesConstPtr m1_indices =
             rockfaceExtraction.getSegmentIndices()[seg_m1];
 

@@ -25,9 +25,9 @@
 int main(int, char **argv) {
     std::string filename = argv[1];
     std::cout << "Reading " << filename << std::endl;
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZRGB>);
 
-    if (pcl::io::loadPCDFile<pcl::PointXYZ>(filename, *cloud) == -1)
+    if (pcl::io::loadPCDFile<pcl::PointXYZRGB>(filename, *cloud) == -1)
         // load the file
     {
         PCL_ERROR ("Couldn't read file");
@@ -44,13 +44,15 @@ int main(int, char **argv) {
     pcl::StatisticalOutlierRemoval<pcl::PointXYZ> removal;
 
 
-    pcl::visualization::CloudViewer viewer("Cloud Viewer");//创建viewer对象
+    pcl::visualization::PCLVisualizer viewer("Cloud Viewer");//创建viewer对象
     //blocks until the cloud is actually rendered
 //    viewer.showCloud(cloud);//将pcb与viewer对象联系起来
-    viewer.showCloud(cloud);
+    viewer.addPointCloud(cloud);
+    viewer.addCoordinateSystem(10000);
 
     while (!viewer.wasStopped())//要想让自己所创窗口一直显示，则加上 while (!viewer.wasStopped()){ };即可.
     {
+        viewer.spinOnce(100);
     }
 
     return 0;

@@ -108,6 +108,20 @@ namespace designSpace {
             return curvatures_;
         }
 
+        //必须在提取操作结束后调用，计算可能的初始化点的起始x轴偏移（在钢拱识别时需要用）
+        float calculateStartShift(){
+            int segment = max_m1_+1;
+            for(size_t i = segment+1; i<curvatures_.size()-1; i++){
+                if(curvatures_[i]>=curvatures_[segment]){
+                    segment = i;
+                } else{
+                    break;
+                }
+            }
+            float shift = (segment - max_m1_ - 1)*segment_length_;
+            return shift>FLT_EPSILON?shift:0.f;
+        }
+
         //提取出岩石表面
         void extract(pcl::PointIndices &rockface_point_indices, int& m1, int& m2) {
             if (!initCompute() ||
