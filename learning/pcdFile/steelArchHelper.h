@@ -219,7 +219,7 @@ namespace designSpace {
                     seed_points_[index].z = optimal.z + tmp_growing_directions_[index].z;
 
                     //estimate the normal vector of the seed
-                    PointT normal_of_seed = calculateNormalVector(seed_points_[index], false);
+                    PointT normal_of_seed = calculateNormalVector(seed_points_[index], true);
 
 
                     //寻找可能的钢拱点
@@ -351,7 +351,7 @@ namespace designSpace {
 
         //计算算法在某点的生长方向
         PointT calculateDirection(const PointT& point) {
-            PointT normal = calculateNormalVector(point, false), direction;
+            PointT normal = calculateNormalVector(point, true), direction;
 
             Eigen::Vector3f n(normal.x, normal.y, normal.z);
             Eigen::Vector3f vx(1, 0, 0);
@@ -376,14 +376,15 @@ namespace designSpace {
                 std::vector<int> k_indices(k_);
                 std::vector<float> k_sqr_distances(k_);
                 int index = findNearestPointIndex(point);
-                tree_->nearestKSearch(input_->points[index], k_, k_indices, k_sqr_distances);
-                float sqr_radius = radius_ * radius_;
-                if (k_sqr_distances[k_sqr_distances.size() - 1] > sqr_radius) {
-                    //TODO fix it
-                    //something wrong
-                    std::cerr << "warning!! distance is larger than radius , squared distance is: "
-                              << k_sqr_distances[k_sqr_distances.size() - 1] << std::endl;
-                }
+                //tree_->nearestKSearch(input_->points[index], k_, k_indices, k_sqr_distances);
+                tree_->radiusSearch(input_->points[index], radius_, k_indices, k_sqr_distances);
+//                float sqr_radius = radius_ * radius_;
+//                if (k_sqr_distances[k_sqr_distances.size() - 1] > sqr_radius) {
+//                    //TODO fix it
+//                    //something wrong
+//                    std::cerr << "warning!! distance is larger than radius , squared distance is: "
+//                              << k_sqr_distances[k_sqr_distances.size() - 1] << std::endl;
+//                }
 
                 PointT n_point;  //平面的法向量
                 float curvature;

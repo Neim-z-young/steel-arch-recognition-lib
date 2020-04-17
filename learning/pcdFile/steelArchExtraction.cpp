@@ -102,7 +102,7 @@ int main(int, char **argv) {
     steelArchExtraction.setRadius(_PARAM_->RADIUS_FOR_C_N_);
     steelArchExtraction.setTree(tree);
     steelArchExtraction.setArchThickness(_PARAM_->ARCH_STEEL_THICKNESS_);
-    steelArchExtraction.setSteelArchGap(_PARAM_->ARCH_STEEL_GAP_);
+    steelArchExtraction.setSteelArchGap(_PARAM_->ARCH_STEEL_GAP_*0.2);
     steelArchExtraction.setStartArchGap(300.f);
     steelArchExtraction.setViewPoint(x, y, z);
 
@@ -138,14 +138,14 @@ int main(int, char **argv) {
 //    pcl::visualization::CloudViewer viewer("Cloud Viewer");//创建viewer对象
 
     pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
-    visualizer.addCoordinateSystem(10000, x, y, z);
+//    visualizer.addCoordinateSystem(10000, x, y, z);
 
     visualizer.addPointCloud(rockface_cloud);
     //visualizer.initCameraParameters ();
 
     visualizer.addPointCloud(steel_arch_cloud, "steel");
 
-    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "steel");
+    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "steel");
 
 //    visualizer.addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(rockface_cloud, normals, 40, 500, "normal");
 
