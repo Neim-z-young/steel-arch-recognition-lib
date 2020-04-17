@@ -86,7 +86,8 @@ int main(int, char **argv) {
     ne.setViewPoint(6012.96, -81.7, 28.68);
     tree_ne->setInputCloud(rockface_cloud, rockface_indices);
     ne.setSearchMethod(tree_ne);
-    ne.setKSearch(40);
+    ne.setRadiusSearch(_PARAM_->RADIUS_FOR_C_N_*0.4);
+//    ne.setKSearch(_PARAM_->K_FOR_C_N_);
 //    ne.compute(*normals);
 
 
@@ -144,7 +145,7 @@ int main(int, char **argv) {
 
     visualizer.addPointCloud(steel_arch_cloud, "steel");
 
-    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "steel");
+    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "steel");
 
 //    visualizer.addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(rockface_cloud, normals, 40, 500, "normal");
 

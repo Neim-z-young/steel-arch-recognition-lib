@@ -256,11 +256,13 @@ namespace designSpace {
                     if(initial_points_[index].z <= optimal.z){
                         optimal_points_.push_back(optimal);
                     }
-
-                    if(calculateAndConvertAngle(optimal.z, optimal.y) <= end_angle_){
+                    if(start_angle_>end_angle_ && calculateAndConvertAngle(optimal.z, optimal.y) <= end_angle_){
                         //TODO 终止条件
                         grow = false;
+                    } else if(start_angle_<end_angle_ && calculateAndConvertAngle(optimal.z, optimal.y) >= end_angle_){
+                        grow = false;
                     }
+
                     if(it-- < 0){
                         grow = false;
                     }
@@ -297,17 +299,12 @@ namespace designSpace {
             assert(indices_!= nullptr);
 
             PointT s_point = input_->points[(*indices_)[0]];
-            //TODO fix it,评估函数有问题
-            s_point.y = -1.;
-            s_point.z = -1.;
 
             float min_x = FLT_MAX, min_z = FLT_MAX, max_x = FLT_MIN, max_y = -FLT_MAX, min_y = FLT_MAX;
             for(const int& index : *indices_){
                 const PointT& tmp = input_->points[index];
-                if(tmp.y<0 && tmp.z<0 && measureStartPoint(s_point)>measureStartPoint(tmp)){
-                    s_point.x = tmp.x;
-                    s_point.y = tmp.y;
-                    s_point.z = tmp.z;
+                if(measureStartPoint(s_point)>measureStartPoint(tmp)){
+                    s_point = tmp;
                 }
                 if(min_x>tmp.x){
                     min_x = tmp.x;
@@ -348,7 +345,8 @@ namespace designSpace {
         }
 
         inline float measureStartPoint(const PointT& t){
-            return -(t.y*t.y)-(t.z*t.z);
+            float tmp =sqrt((t.y*t.y) + (t.z*t.z));
+            return t.z*tmp;
         }
 
         //计算算法在某点的生长方向
@@ -357,6 +355,9 @@ namespace designSpace {
 
             Eigen::Vector3f n(normal.x, normal.y, normal.z);
             Eigen::Vector3f vx(1, 0, 0);
+            if(start_angle_<end_angle_){
+                vx(0) = -vx(0);
+            }
             Eigen::Vector3f tmp_d = vx.cross(n);
             //TODO 修改生长步长，不应太大
             tmp_d = 2 * arch_thickness_ * (tmp_d / tmp_d.norm());
