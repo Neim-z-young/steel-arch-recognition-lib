@@ -177,7 +177,7 @@ namespace designSpace {
             tree_->setInputCloud(input_, indices_);
 
             //计算点云法向量
-            preCalculateNormals();
+//            preCalculateNormals();
 
             //计算初始化点
             initialCalculate();
@@ -405,6 +405,9 @@ namespace designSpace {
                 }
                 return n_point;
             }else{
+                if(normals_->size()==0){ //惰性计算法向量
+                    preCalculateNormals();
+                }
                 int index = findNearestPointIndex(point);
                 pcl::Normal normal = normals_->points[index];
                 PointT n_point;

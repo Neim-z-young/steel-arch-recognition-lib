@@ -24,6 +24,7 @@
 
 //user lib
 #include "../designLib/tunnelTool.h"
+#include "../designLib/PCATool.h"
 using designSpace::_PARAM_;
 namespace designSpace {
     //Wd = [ voxel_size, Wa] x轴切片大小
@@ -129,6 +130,7 @@ namespace designSpace {
                 (indices_ && indices_->empty())) {
                 return;
             }
+            setupPCAEstimate();
             cloudSegmentAloneAxis(segment_indices_);
 
             size_t size = segment_indices_.size();
@@ -298,6 +300,14 @@ namespace designSpace {
         using BasePCLBase::initCompute;
         using BasePCLBase::deinitCompute;
 
+        void setupPCAEstimate(){
+            pcaEstimate_.setInputCloud(input_);
+            pcaEstimate_.setIndices(indices_);
+            pcaEstimate_.setRadius(radius_);
+            pcaEstimate_.setK(k_);
+            pcaEstimate_.setTree(tree_);
+        }
+
         //将点云沿轴分段
         void cloudSegmentAloneAxis(Segments &seg_indices) {
             float x = 0, y = 0, z = 0, min_x = FLT_MAX, max_x = -FLT_MAX, min_y = FLT_MAX, max_y = -FLT_MAX, min_z = FLT_MAX, max_z = -FLT_MAX;
@@ -430,6 +440,8 @@ namespace designSpace {
 
         int max_m1_;  //用来标识混凝土表面与岩石表面的差分最值段
         int min_m1_;  //用来标识岩石表面与工作表面的差分最值段
+
+        PCAEstimate<PointT> pcaEstimate_;
 
         Segments segment_indices_;
         SegmentArgs curvatures_;

@@ -103,7 +103,7 @@ int main(int, char **argv) {
     steelArchExtraction.setTree(tree);
     steelArchExtraction.setArchThickness(_PARAM_->ARCH_STEEL_THICKNESS_);
     steelArchExtraction.setSteelArchGap(_PARAM_->ARCH_STEEL_GAP_*0.2);
-    steelArchExtraction.setStartArchGap(300.f);
+    steelArchExtraction.setStartArchGap(0.f);
     steelArchExtraction.setViewPoint(x, y, z);
 
     pcl::PointIndices::Ptr steel_arch_indices_ptr(new pcl::PointIndices);

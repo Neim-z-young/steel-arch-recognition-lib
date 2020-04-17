@@ -33,7 +33,7 @@ target_link_libraries(calibration
         ${PCL_LIBRARIES}
         )
 
-add_executable(rockface_extraction pcdFile/rockfaceExtraction.cpp pcdFile/rockfaceHelper.h designLib/tunnelTool.h designLib/tunnelTool.cpp)
+add_executable(rockface_extraction pcdFile/rockfaceExtraction.cpp pcdFile/rockfaceHelper.h designLib/tunnelTool.h designLib/tunnelTool.cpp designLib/PCATool.h)
 target_link_libraries(rockface_extraction
         ${VTK_LIBRARIES}
         ${Boost_LIBRARIES}
