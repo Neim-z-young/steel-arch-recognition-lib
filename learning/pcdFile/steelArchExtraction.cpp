@@ -145,7 +145,7 @@ int main(int, char **argv) {
 
     visualizer.addPointCloud(steel_arch_cloud, "steel");
 
-    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 5, "steel");
+    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "steel");
 
 //    visualizer.addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(rockface_cloud, normals, 40, 500, "normal");
 

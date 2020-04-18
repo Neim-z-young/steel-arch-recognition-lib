@@ -289,7 +289,8 @@ namespace designSpace {
             ne.setInputCloud(input_);
             ne.setViewPoint(view_point_.x, view_point_.y, view_point_.z);
             ne.setSearchMethod(tree_);
-            ne.setKSearch(k_);
+//            ne.setKSearch(k_);
+            ne.setRadiusSearch(radius_);
             normals_->clear();
             ne.compute(*normals_);
         }

@@ -130,7 +130,6 @@ namespace designSpace {
                 (indices_ && indices_->empty())) {
                 return;
             }
-            setupPCAEstimate();
             cloudSegmentAloneAxis(segment_indices_);
 
             size_t size = segment_indices_.size();
@@ -152,7 +151,7 @@ namespace designSpace {
             }
 
             //DASST(Differential Analysis method for the Section Sequences of the Tunnel point cloud)
-            max_m1_ = removeConcrete(*rock_and_work_face_indices_, true);
+            max_m1_ = removeConcrete(*rock_and_work_face_indices_, false);
 
             min_m1_ = removeWorkface(max_m1_+1, rockface_point_indices.indices);
 
@@ -183,8 +182,11 @@ namespace designSpace {
             }
             avg_curvature /= float(max_m1);
             threshold = avg_curvature * 3.f;
+            std::cout<<"avg curv: "<<avg_curvature<<std::endl;
 
             rock_and_work_face_indices.reserve(indices_->size()/30); //TODO fix it by using indices_
+
+            int tmp_start = max_m1;
 
             if (direct_strategy) { //直接筛选
                 for (size_t i = max_m1; i < size; i++) {
@@ -193,17 +195,28 @@ namespace designSpace {
                     }
                 }
             } else {
+                int segment = _PARAM_->ARCH_STEEL_GAP_/segment_length_;
+                if(max_m1>segment){
+                    max_m1 -= segment;
+                }
                 //采用曲率阈值法筛选
-                for (size_t i = 0; i < size; i++) {
+                for (size_t i = max_m1; i < size; i++) {
                     if (curvatures_[i] > threshold) {
-                        for (size_t t = 0; t < segment_indices_[i]->size(); t++) {
-                            rock_and_work_face_indices.push_back((*segment_indices_[i])[t]);
+//                        for (size_t t = 0; t < segment_indices_[i]->size(); t++) {
+//                            rock_and_work_face_indices.push_back((*segment_indices_[i])[t]);
+//                        }
+                        for (size_t j = i; j < size; j++) {
+                            for (size_t t = 0; t < segment_indices_[j]->size(); t++) {
+                                rock_and_work_face_indices.push_back((*segment_indices_[j])[t]);
+                            }
                         }
+                        tmp_start = i;
+                        break;
                     }
                 }
             }
 
-            return max_m1;
+            return tmp_start;
         }
 
         int removeWorkface(int start_segment, std::vector<int>& rockface_indices){
@@ -300,13 +313,6 @@ namespace designSpace {
         using BasePCLBase::initCompute;
         using BasePCLBase::deinitCompute;
 
-        void setupPCAEstimate(){
-            pcaEstimate_.setInputCloud(input_);
-            pcaEstimate_.setIndices(indices_);
-            pcaEstimate_.setRadius(radius_);
-            pcaEstimate_.setK(k_);
-            pcaEstimate_.setTree(tree_);
-        }
 
         //将点云沿轴分段
         void cloudSegmentAloneAxis(Segments &seg_indices) {
@@ -346,7 +352,11 @@ namespace designSpace {
                 int index = random() % size;
                 total_curvature += calculateCurvature(segment_indices, index);
             }
-            return total_curvature / float(k_samples);
+            float avg_cur = total_curvature / float(k_samples);
+            if(isnan(avg_cur)){
+                avg_cur = 0;
+            }
+            return avg_cur;
         }
 
         //计算点云中一个点的曲率  index是原始点云中在segment段中点的下标
@@ -441,7 +451,6 @@ namespace designSpace {
         int max_m1_;  //用来标识混凝土表面与岩石表面的差分最值段
         int min_m1_;  //用来标识岩石表面与工作表面的差分最值段
 
-        PCAEstimate<PointT> pcaEstimate_;
 
         Segments segment_indices_;
         SegmentArgs curvatures_;

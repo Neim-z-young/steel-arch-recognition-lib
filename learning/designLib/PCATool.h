@@ -113,8 +113,6 @@ namespace designSpace {
             cov_mat = cov_mat.transpose()*cov_mat;
             Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eigensolver(cov_mat);
             if (eigensolver.info() != Eigen::Success) abort();
-            eigensolver.eigenvalues();
-            cov_mat.trace();
             float curv = std::abs(eigensolver.eigenvalues()(0)/cov_mat.trace());
             return curv;
         }

@@ -9,6 +9,7 @@
       <config projectName="pclDemo" targetName="spin_images" />
       <config projectName="pclDemo" targetName="show_pcd_file" />
       <config projectName="pclDemo" targetName="steel_arch_extraction" />
+      <config projectName="pclDemo" targetName="test" />
       <config projectName="pclDemo" targetName="ground_remove" />
       <config projectName="pclDemo" targetName="cluster" />
     </generated>
@@ -19,11 +20,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="将计算法向量时搜索周围拟合平面点的方式由最近k个点修改为了按照半径搜索，得到的钢拱点效果比较理想，但还未测试该方法在其他数据上的效果">
-      <change afterPath="$PROJECT_DIR$/learning/designLib/PCATool.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/learning/designLib/PCATool.h" afterDir="false" />
+    <list default="true" id="6010ae70-84b1-43a0-be54-d9f77dd48030" name="Default Changelist" comment="尝试使用pca法计算点云曲率，但是速度和最小二乘估计的差别不明显，故暂不使用。">
+      <change afterPath="$PROJECT_DIR$/learning/pcdFile/test.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/learning/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/learning/designLib/PCATool.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/designLib/PCATool.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/rockfaceHelper.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchExtraction.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" beforeDir="false" afterPath="$PROJECT_DIR$/learning/pcdFile/steelArchHelper.h" afterDir="false" />
@@ -88,7 +89,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.rockface_extraction">
+  <component name="RunManager" selected="CMake Application.steel_arch_extraction">
     <configuration name="calibration" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/rgb_clustered_voxelization_4.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="calibration" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="calibration">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -129,6 +130,11 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="test" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/groundRemoved_calibrated_rgb_clustered_voxelization_5.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="test" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="test">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="voxelization" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="$PROJECT_DIR$/../../DATA/xyz.pcd" PASS_PARENT_ENVS_2="true" PROJECT_NAME="pclDemo" TARGET_NAME="voxelization" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="pclDemo" RUN_TARGET_NAME="voxelization">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -143,6 +149,7 @@
       <item itemvalue="CMake Application.show_pcd_file" />
       <item itemvalue="CMake Application.spin_images" />
       <item itemvalue="CMake Application.steel_arch_extraction" />
+      <item itemvalue="CMake Application.test" />
       <item itemvalue="CMake Application.voxelization" />
     </list>
   </component>
@@ -218,7 +225,10 @@
       <workItem from="1586919943480" duration="2722000" />
       <workItem from="1587004285766" duration="11998000" />
       <workItem from="1587087398642" duration="6402000" />
-      <workItem from="1587109737055" duration="11155000" />
+      <workItem from="1587109737055" duration="11244000" />
+      <workItem from="1587121015708" duration="113000" />
+      <workItem from="1587126280323" duration="138000" />
+      <workItem from="1587175173698" duration="12246000" />
     </task>
     <task id="LOCAL-00001" summary="修正了选取初始化点的评估函数，由此引起起始角及结束角的变化带来的生长问题也一并修复了">
       <created>1587112446413</created>
@@ -234,7 +244,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587113742054</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="尝试使用pca法计算点云曲率，但是速度和最小二乘估计的差别不明显，故暂不使用。">
+      <created>1587120978964</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1587120978964</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,7 +285,8 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="修正了选取初始化点的评估函数，由此引起起始角及结束角的变化带来的生长问题也一并修复了" />
     <MESSAGE value="将计算法向量时搜索周围拟合平面点的方式由最近k个点修改为了按照半径搜索，得到的钢拱点效果比较理想，但还未测试该方法在其他数据上的效果" />
-    <option name="LAST_COMMIT_MESSAGE" value="将计算法向量时搜索周围拟合平面点的方式由最近k个点修改为了按照半径搜索，得到的钢拱点效果比较理想，但还未测试该方法在其他数据上的效果" />
+    <MESSAGE value="尝试使用pca法计算点云曲率，但是速度和最小二乘估计的差别不明显，故暂不使用。" />
+    <option name="LAST_COMMIT_MESSAGE" value="尝试使用pca法计算点云曲率，但是速度和最小二乘估计的差别不明显，故暂不使用。" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

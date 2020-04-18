@@ -54,3 +54,10 @@ target_link_libraries(steel_arch_extraction
         ${PCL_LIBRARIES}
         ${Eigen3_LIBRARIES}
         )
+add_executable(test pcdFile/test.cpp designLib/PCATool.h designLib/tunnelTool.h designLib/tunnelTool.cpp)
+target_link_libraries(test
+        ${VTK_LIBRARIES}
+        ${Boost_LIBRARIES}
+        ${PCL_LIBRARIES}
+        ${Eigen3_LIBRARIES}
+        )
