@@ -22,6 +22,10 @@
 #include <pcl/segmentation/extract_clusters.h>
 #include <pcl/search/kdtree.h>
 #include <pcl/features/normal_3d.h>
+#include <pcl/keypoints/harris_3d.h>
+#include <pcl/keypoints/narf_keypoint.h>
+#include <pcl/range_image/range_image.h>
+#include <pcl/features/range_image_border_extractor.h>
 
 //user lib
 #include "../designLib/tunnelTool.h"
@@ -101,12 +105,12 @@ int main(int, char **argv) {
 
     int it = 1000;
     start = time(nullptr);
-    for(pcl::PointXYZRGB point : cloud->points){
-        float curv = pcaEstimate.calculateCurvature(point);
-        if(it--<=0){
-            break;
-        }
-    }
+//    for(pcl::PointXYZRGB point : cloud->points){
+//        float curv = pcaEstimate.calculateCurvature(point);
+//        if(it--<=0){
+//            break;
+//        }
+//    }
     end = time(nullptr);
 
     std::cout << "finish to calculate 1000 times  curvature. time: "<<(end-start)<<" second"<<std::endl;
@@ -117,12 +121,78 @@ int main(int, char **argv) {
     std::cout << "finish calculate normals, normal size: "<<normals->size()<<std::endl;
 
 
+    //harris3d关键点识别
+    pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_out(new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::PointCloud<pcl::PointXYZRGB>::Ptr rgb_cloud_out(new pcl::PointCloud<pcl::PointXYZRGB>);
+    cloud_out->height = 1;
+    cloud_out->width =400;
+    cloud_out->resize(cloud_out->height * cloud_out->width);
+    cloud_out->clear();
+    pcl::HarrisKeypoint3D<pcl::PointXYZRGB, pcl::PointXYZI, pcl::Normal> keypoint3D;
+    keypoint3D.setInputCloud(cloud);
+    keypoint3D.setRadius(_PARAM_->ARCH_STEEL_THICKNESS_);
+    keypoint3D.setSearchMethod(tree_ne);
+    keypoint3D.setNonMaxSupression(true);
+    keypoint3D.setThreshold(0.0005f);
+
+    std::cout << "start to compute keypoint"<<std::endl;
+    start = time(nullptr);
+    keypoint3D.compute(*cloud_out);
+    end = time(nullptr);
+
+    std::cout << "finish to compute. time: "<<(end-start)<<" second"<<std::endl;
+    pcl::copyPointCloud(*cloud_out, *rgb_cloud_out);
+    std::cout << "size: "<<rgb_cloud_out->size()<<std::endl;
+
+    int R = 0xea;
+    int G = 0x62;
+    int B = 0x46;
+    for(pcl::PointXYZRGB& point: rgb_cloud_out->points){
+        point.r = R;
+        point.g = G;
+        point.b = B;
+    }
+
+    //narf keypoint
+    pcl::RangeImage::Ptr rangeImage(new pcl::RangeImage);
+    rangeImage->createFromPointCloud(*cloud,
+            pcl::deg2rad (0.05f),
+            pcl::deg2rad (360.f),
+            pcl::deg2rad (180.f),
+            Eigen::Affine3f::Identity ());
+    // 提取NARF关键点
+    pcl::RangeImageBorderExtractor range_image_border_extractor;//创建深度图像的边界提取器，用于提取NARF关键点
+    pcl::NarfKeypoint narf_keypoint_detector (&range_image_border_extractor, 100);//创建NARF对象
+    narf_keypoint_detector.setRangeImage (&(*rangeImage));//设置点云对应的深度图
+//    narf_keypoint_detector.getParameters ().support_size = 100.f;// 感兴趣点的尺寸（球面的直径）
+
+    pcl::PointCloud<int>::Ptr keypoint_indices(new pcl::PointCloud<int>);
+    narf_keypoint_detector.compute(*keypoint_indices);
+    std::cout << "Found size: "<<keypoint_indices->points.size ()<<std::endl;
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr narf_keypoints(new pcl::PointCloud<pcl::PointXYZ>);
+    size_t size = (*keypoint_indices).points.size();
+    narf_keypoints->resize(size);
+    int i = 0;
+    for(const int& index:(*keypoint_indices).points){
+        narf_keypoints->points[i].getVector3fMap() = rangeImage->points[index].getVector3fMap();
+        i++;
+    }
 
 //    pcl::visualization::CloudViewer viewer("Cloud Viewer");//创建viewer对象
 
     pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
 
-    visualizer.addPointCloud(cloud);
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (rangeImage, 100, 0, 0);
+    visualizer.addPointCloud (rangeImage, range_image_color_handler, "range image");//添加点云
+    pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> narf_color_handler (narf_keypoints, 0, 255, 0);
+    visualizer.addPointCloud (narf_keypoints, narf_color_handler, "narf image");//添加点云
+    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "narf image");
+
+
+//    visualizer.addPointCloud(cloud);
+//    visualizer.addPointCloud(rgb_cloud_out, "key point");
+//    visualizer.setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "key point");
 
 
 //    visualizer.addPointCloudNormals<pcl::PointXYZRGB, pcl::Normal>(rockface_cloud, normals, 40, 500, "normal");
