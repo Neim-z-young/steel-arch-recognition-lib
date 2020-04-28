@@ -147,9 +147,18 @@ int main(int, char **argv) {
 
 //    pcl::visualization::CloudViewer viewer("Cloud Viewer");//创建viewer对象
 
+//    int R = 0x44;
+//    int G = 0x72;
+//    int B = 0xc4;
+//    for(int t:rockface_indices_ptr->indices){
+//        clustered_color_cloud->points[t].r = R;
+//        clustered_color_cloud->points[t].g = G;
+//        clustered_color_cloud->points[t].b = B;
+//    }
+
     pcl::visualization::PCLVisualizer visualizer("Cloud visualizer");
     visualizer.addCoordinateSystem(10000, x, y, z);
-
+//    visualizer.setBackgroundColor(255, 255, 255);
     visualizer.addPointCloud(clustered_color_cloud);
     //visualizer.initCameraParameters ();
 

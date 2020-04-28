@@ -256,7 +256,7 @@ namespace designSpace {
         void plotCurvatureRelation() {
             pcl::visualization::PCLPlotter::Ptr plot(new pcl::visualization::PCLPlotter);
             plot->setBackgroundColor(1, 1, 1);
-            plot->setTitle("Evaluate Tunnel Section Curvature Relation");
+            plot->setTitle("DASST for Curvature");
             plot->setXTitle("section");
             plot->setYTitle("curvature");
             size_t seg_size = curvatures_.size();
@@ -282,9 +282,9 @@ namespace designSpace {
         void plotHeightRelation() {
             pcl::visualization::PCLPlotter::Ptr plot(new pcl::visualization::PCLPlotter);
             plot->setBackgroundColor(1, 1, 1);
-            plot->setTitle("Evaluate Tunnel Section Height Relation");
+            plot->setTitle("DASST for height");
             plot->setXTitle("section");
-            plot->setYTitle("height");
+            plot->setYTitle("height(mm)");
             size_t seg_size = heights_.size();
             int start_seg = max_m1_ + 1;
             std::vector<double> X_value, height_Y_value, g_Y_value;
