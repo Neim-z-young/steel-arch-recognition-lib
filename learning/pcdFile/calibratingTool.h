@@ -146,7 +146,7 @@ namespace designSpace {
             for (auto pair:voxel_map) {
                 f_value += float(pair.second * pair.second);
             }
-            return f_value / (voxel_map.size()*voxel_map.size());  //修改评估策略
+            return f_value / (voxel_map.size());  //修改评估策略
         }
 
         // Members derived from the base class
